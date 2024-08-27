@@ -1,36 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RFID Reader - 기본 화면</title>
+    <title>RFID 식단 구성</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 1024px;
             text-align: center;
-            margin-top: 50px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
         }
-        #status {
-            font-size: 24px;
-            color: #333;
+        .before, .after {
+            display: none;
         }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
+        .active {
+            display: block;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+        .button-container {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>RFID Reader</h1>
-    <p>Place your RFID tag near the reader</p>
-    <p id="status">Waiting for data...</p>
-    <button id="connect">Connect to Arduino</button>
+
+    <div class="container">
+        <div id="before-screen" class="before active">
+            <h1>점심 식단을 구성해보자!</h1>
+            <img src="path/to/your/before-image.png" alt="Before Image">
+        </div>
+        <div id="after-screen" class="after">
+            <h1>된장국 추가!</h1>
+            <img src="path/to/your/after-image.png" alt="After Image">
+        </div>
+    </div>
 
     <script>
-        const statusElement = document.getElementById('status');
-        const connectButton = document.getElementById('connect');
+        const beforeScreen = document.getElementById('before-screen');
+        const afterScreen = document.getElementById('after-screen');
 
-        connectButton.addEventListener('click', async () => {
+        async function connectToArduino() {
             try {
                 const port = await navigator.serial.requestPort();
                 await port.open({ baudRate: 9600 });
@@ -45,11 +72,12 @@
                         break;
                     }
                     if (value) {
-                        statusElement.textContent = value.trim();
+                        const trimmedValue = value.trim();
 
-                        // '미역국' 메시지를 받으면 다른 페이지로 이동
-                        if (value.trim() === "미역국") {
-                            window.location.href = "page2.html";
+                        // RFID 태그가 "미역국"일 경우 화면을 변경
+                        if (trimmedValue === "미역국") {
+                            beforeScreen.classList.remove('active');
+                            afterScreen.classList.add('active');
                         }
                     }
                 }
@@ -57,13 +85,12 @@
                 reader.releaseLock();
             } catch (error) {
                 console.error('There was an error:', error);
-                statusElement.textContent = 'Error: ' + error.message;
-
-                if (error.message.includes('No port selected')) {
-                    alert('시리얼 포트를 선택해야 합니다!');
-                }
             }
-        });
+        }
+
+        // 페이지가 로드되면 자동으로 연결 시도
+        window.onload = connectToArduino;
     </script>
+
 </body>
 </html>
