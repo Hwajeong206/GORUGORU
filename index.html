@@ -47,12 +47,9 @@
                     if (value) {
                         statusElement.textContent = value.trim();
 
-                        console.log('Received value:', value.trim()); // 데이터 수신 확인
-
                         // '미역국' 메시지를 받으면 다른 페이지로 이동
                         if (value.trim() === "미역국") {
-                            alert('미역국 태그 인식!'); // 화면 전환 대신 alert로 확인
-                            // window.location.href = "page2.html"; // 페이지 전환
+                            window.location.href = "page2.html";
                         }
                     }
                 }
@@ -61,6 +58,10 @@
             } catch (error) {
                 console.error('There was an error:', error);
                 statusElement.textContent = 'Error: ' + error.message;
+
+                if (error.message.includes('No port selected')) {
+                    alert('시리얼 포트를 선택해야 합니다!');
+                }
             }
         });
     </script>
