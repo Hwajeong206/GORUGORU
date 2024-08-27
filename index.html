@@ -106,21 +106,6 @@
             font-size: 20px;
             cursor: pointer;
         }
-
-        .connect-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .connect-button:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
@@ -142,14 +127,12 @@
         <div class="btn-container">
             <button class="btn-study">식단 공부하기 ➔</button>
         </div>
-        <button class="connect-button" id="connect-btn">아두이노 연결</button>
     </div>
 
     <button class="exit-button">나가기</button>
 
     <script>
         const miyeokgukSlot = document.getElementById('miyeokguk-slot');
-        const connectButton = document.getElementById('connect-btn');
 
         async function connectToArduino() {
             try {
@@ -174,7 +157,7 @@
                         // RFID 태그가 "미역국"일 경우 그림을 표시
                         if (trimmedValue === "미역국") {
                             console.log("미역국 태그 인식");
-                            miyeokgukSlot.innerHTML = '<img src="/Users/ihwajeong/Downloads/미역국.png" alt="미역국">';
+                            miyeokgukSlot.innerHTML = '<img src="path/to/miyeokguk-image.png" alt="미역국">';
                         }
                     }
                 }
@@ -185,8 +168,8 @@
             }
         }
 
-        // "아두이노 연결" 버튼 클릭 시 연결 시도
-        connectButton.addEventListener('click', connectToArduino);
+        // 페이지 로드 시 자동으로 연결 시도
+        window.onload = connectToArduino;
     </script>
 
 </body>
