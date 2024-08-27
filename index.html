@@ -6,8 +6,13 @@
     <title>RFID 식단 구성</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            @font-face {
+    font-family: 'Happiness-Sans-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/Happiness-Sans-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+            background-color: FFE16C;
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,7 +24,7 @@
             width: 90%;
             max-width: 1024px;
             text-align: center;
-            background-color: #fff;
+            background-color: ffffff;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             padding: 20px;
@@ -54,6 +59,41 @@
     </div>
 
     <script>
+        async function connectToArduino() {
+    try {
+        const port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 9600 });
+
+        const textDecoder = new TextDecoderStream();
+        const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+        const reader = textDecoder.readable.getReader();
+
+        console.log("Connected to Arduino");
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) {
+                break;
+            }
+            if (value) {
+                const trimmedValue = value.trim();
+                console.log("Received:", trimmedValue);
+
+                // RFID 태그가 "미역국"일 경우 화면을 변경
+                if (trimmedValue === "미역국") {
+                    console.log("미역국 태그 인식");
+                    beforeScreen.classList.remove('active');
+                    afterScreen.classList.add('active');
+                }
+            }
+        }
+
+        reader.releaseLock();
+    } catch (error) {
+        console.error('There was an error:', error);
+    }
+}
+
         const beforeScreen = document.getElementById('before-screen');
         const afterScreen = document.getElementById('after-screen');
 
