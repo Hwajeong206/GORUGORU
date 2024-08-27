@@ -20,6 +20,7 @@
         }
 
         .container {
+font-family: 'Happiness Sans', sans-serif;
             background-color: #FFE28D;
             border-radius: 15px;
             padding: 20px;
@@ -30,7 +31,7 @@
             position: relative;
         }
 
-        h1 {
+        h1 {font-family: 'Happiness Sans', sans-serif;
             font-size: 40px;
             margin-bottom: 20px;
             color: #333;
@@ -71,6 +72,8 @@
         }
 
         .btn-study {
+font-family: 'Happiness Sans', sans-serif;
+
             background-color: #FF8C00;
             color: white;
             padding: 16px 16px;
@@ -95,7 +98,8 @@
             cursor: pointer;
         }
 
-        .exit-button {
+        .exit-button {font-family: 'Happiness Sans', sans-serif;
+
             position: absolute;
             top: 20px;
             right: calc(50% - 300px - 15px); /* 중앙 컨테이너 오른쪽 + 15px */
@@ -133,6 +137,7 @@
 
     <script>
         const miyeokgukSlot = document.getElementById('miyeokguk-slot');
+        let portConnected = false;
 
         async function connectToArduino() {
             try {
@@ -144,6 +149,7 @@
                 const reader = textDecoder.readable.getReader();
 
                 console.log("Connected to Arduino");
+                portConnected = true;
 
                 while (true) {
                     const { value, done } = await reader.read();
@@ -168,8 +174,12 @@
             }
         }
 
-        // 페이지 로드 시 자동으로 연결 시도
-        window.onload = connectToArduino;
+        // 첫 클릭 시 연결 시도
+        document.addEventListener('click', () => {
+            if (!portConnected) {
+                connectToArduino();
+            }
+        });
     </script>
 
 </body>
