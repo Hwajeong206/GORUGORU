@@ -1,145 +1,36 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>점심 식단 구성</title>
+    <title>RFID Reader - 기본 화면</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Happiness+Sans&display=swap');
-
         body {
-            font-family: 'Happiness Sans', sans-serif;
-            background-color: #FFF4CC;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            position: relative;
-        }
-
-        .container {
-font-family: 'Happiness Sans', sans-serif;
-            background-color: #FFE28D;
-            border-radius: 15px;
-            padding: 20px;
-            width: 90%;
-            max-width: 700px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
             text-align: center;
-            position: relative;
+            margin-top: 50px;
         }
-
-        h1 {font-family: 'Happiness Sans', sans-serif;
-            font-size: 40px;
-            margin-bottom: 20px;
+        #status {
+            font-size: 24px;
             color: #333;
         }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .grid-item {
-            width: 95px;
-            height: 95px;
-            background-color: white;
-            border-radius: 10px;
-            border: 2px dashed #E0E0E0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: #E0E0E0;
-        }
-
-        .grid-item img {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 10px;
-        }
-
-        .snack {
+        button {
+            padding: 10px 20px;
             font-size: 16px;
-        }
-
-        .btn-container {
-            margin-top: 20px;
-        }
-
-        .btn-study {
-font-family: 'Happiness Sans', sans-serif;
-
-            background-color: #FF8C00;
-            color: white;
-            padding: 16px 16px;
-            border: none;
-            border-radius: 14px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .btn-study:hover {
-            background-color: #e07b00;
-        }
-
-        .menu-button {
-            position: absolute;
-            top: 20px;
-            left: calc(50% - 300px - 28px); /* 중앙 컨테이너 왼쪽 + 28px */
-            background-color: #FFD966;
-            border: none;
-            padding: 16px;
-            border-radius: 14px;
-            cursor: pointer;
-        }
-
-        .exit-button {font-family: 'Happiness Sans', sans-serif;
-
-            position: absolute;
-            top: 20px;
-            right: calc(50% - 300px - 15px); /* 중앙 컨테이너 오른쪽 + 15px */
-            background-color: #FFD966;
-            border: none;
-            padding: 16px;
-            border-radius: 16px;
-            font-size: 20px;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
-
-    <button class="menu-button">≡</button>
-
-    <div class="container">
-        <h1>점심 식단을 구성해보자!</h1>
-        <div class="grid-container">
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item snack">간식</div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item snack">간식</div>
-            <div class="grid-item" id="miyeokguk-slot"></div> <!-- 미역국 그림이 나타날 곳 -->
-        </div>
-        <div class="btn-container">
-            <button class="btn-study">식단 공부하기 ➔</button>
-        </div>
-    </div>
-
-    <button class="exit-button">나가기</button>
+    <h1>RFID Reader</h1>
+    <p>Place your RFID tag near the reader</p>
+    <p id="status">Waiting for data...</p>
+    <button id="connect">Connect to Arduino</button>
 
     <script>
-        const miyeokgukSlot = document.getElementById('miyeokguk-slot');
-        let portConnected = false;
+        const statusElement = document.getElementById('status');
+        const connectButton = document.getElementById('connect');
 
-        async function connectToArduino() {
+        connectButton.addEventListener('click', async () => {
             try {
                 const port = await navigator.serial.requestPort();
                 await port.open({ baudRate: 9600 });
@@ -148,22 +39,17 @@ font-family: 'Happiness Sans', sans-serif;
                 const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
                 const reader = textDecoder.readable.getReader();
 
-                console.log("Connected to Arduino");
-                portConnected = true;
-
                 while (true) {
                     const { value, done } = await reader.read();
                     if (done) {
                         break;
                     }
                     if (value) {
-                        const trimmedValue = value.trim();
-                        console.log("Received:", trimmedValue);
+                        statusElement.textContent = value.trim();
 
-                        // RFID 태그가 "미역국"일 경우 그림을 표시
-                        if (trimmedValue === "미역국") {
-                            console.log("미역국 태그 인식");
-                            miyeokgukSlot.innerHTML = '<img src="https://github.com/Hwajeong206/GORUGORU/blob/main/미역국.png?raw=true" alt="미역국">';
+                        // '미역국' 메시지를 받으면 다른 페이지로 이동
+                        if (value.trim() === "미역국") {
+                            window.location.href = "page2.html";
                         }
                     }
                 }
@@ -171,16 +57,13 @@ font-family: 'Happiness Sans', sans-serif;
                 reader.releaseLock();
             } catch (error) {
                 console.error('There was an error:', error);
-            }
-        }
+                statusElement.textContent = 'Error: ' + error.message;
 
-        // 첫 클릭 시 연결 시도
-        document.addEventListener('click', () => {
-            if (!portConnected) {
-                connectToArduino();
+                if (error.message.includes('No port selected')) {
+                    alert('시리얼 포트를 선택해야 합니다!');
+                }
             }
         });
     </script>
-
 </body>
 </html>
