@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+  <title>샌드위치 화면</title>
+  <style>
+    @font-face {
+      font-family: 'Happiness Sans';
+      src: url('path-to-your-font-file.woff2') format('woff2'); /* 폰트 파일 경로를 실제로 넣어주세요 */
+      font-weight: 900;
+      font-style: normal;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Happiness Sans', sans-serif;
+      background-color: #F7828D; /* 배경 색상 */
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* 상단 메뉴 버튼 */
+    .menu-btn {
+      position: absolute;
+      top: 35px;
+      left: 60px;
+      width: 108px;
+      height: 96px;
+      background-color: white;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 텍스트와 샌드위치 이미지 섹션 */
+    .content {
+      text-align: center;
+      margin-top: 100px;
+    }
+
+    .content h1 {
+      color: #FFF;
+      text-align: center;
+      font-family: "Happiness Sans";
+      font-size: 56px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: 143%; /* 80.08px */
+      letter-spacing: -3.36px;
+      margin-bottom: 20px;
+    }
+
+    /* 샌드위치가 둥둥 떠다니는 모션 효과 */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .sandwich {
+      position: relative;
+      width: 600px;
+      height: 600px;
+      background-color: transparent;
+      animation: float 3s ease-in-out infinite; /* 둥둥 떠다니는 애니메이션 추가 */
+    }
+
+    .sandwich::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 70%);
+      transform: translate(-50%, -50%);
+      z-index: 0; /* 빛 효과를 샌드위치 이미지 뒤에 놓기 */
+    }
+
+    .sandwich img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1; /* 샌드위치 이미지를 빛 효과 앞에 놓기 */
+    }
+
+    /* touch-icon에 투명도 애니메이션 추가 */
+    @keyframes fadeInOut {
+      0%, 100% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .touch-icon {
+      position: absolute;
+      top: 70%;
+      left: 80%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      animation: fadeInOut 2s ease-in-out infinite; /* 투명도가 반복되는 애니메이션 추가 */
+    }
+
+    .touch-icon img {
+      width: 154px;
+      height: auto;
+    }
+
+    /* "알아보기" 텍스트 */
+    .explore-text {
+      margin-top: 20px; /* 아이콘과의 간격 조정 */
+      color: #FFF;
+      text-align: center;
+      font-family: "Happiness Sans";
+      font-size: 33.464px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: 140%; /* 46.85px */
+      letter-spacing: -2.008px;
+      margin-left: 20px; /* 20px 오른쪽으로 이동 */
+    }
+
+    /* 하단 뱃지와 보너스 섹션 */
+    .bottom-section {
+      width: 1366px; /* 1366px로 너비 조정 */
+      height: 193px; /* 193px로 높이 조정 */
+      padding: 20px;
+      background-color: white;
+      color: #F7828D;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+    }
+
+    .badge, .bonus {
+      display: flex;
+      flex-direction: row; /* 텍스트와 이미지 나란히 배치 */
+      align-items: center;
+      margin-right: 30px; /* 여백 추가 */
+    }
+
+    .badge .icon, .bonus .icon {
+      margin-right: 20px; /* 이미지와 텍스트 사이 간격 */
+    }
+
+    /* 이미지로 아이콘 추가 */
+    .badge .icon img, .bonus .icon img {
+      width: 150px; /* 이미지를 크게 설정 */
+      height: auto;
+    }
+
+    /* 뱃지 획득, 탄탄한 균형 텍스트 */
+    .badge .text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* 왼쪽 정렬 */
+    }
+
+    .badge .text div:first-child {
+      color: #FC7575;
+      font-family: "Happiness Sans";
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: 140%;
+      letter-spacing: -1.68px;
+    }
+
+    .badge .text div:last-child {
+      color: #272727;
+      font-family: "Happiness Sans";
+      font-size: 44.624px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 140%;
+      letter-spacing: -2.677px;
+    }
+
+    /* 수분 보너스, 67.2% 텍스트 */
+    .bonus .text {
+      display: flex;
+      flex-direction: column; /* 텍스트를 세로로 배치 */
+      align-items: flex-start; /* 왼쪽 정렬 */
+    }
+
+    .bonus .text div:first-child {
+      color: #FC7575;
+      font-family: "Happiness Sans";
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: 140%;
+      letter-spacing: -1.68px;
+      margin-bottom: 10px;
+    }
+
+    .bonus .text div:last-child {
+      color: #272727;
+      font-family: "Happiness Sans";
+      font-size: 44.624px; /* 탄탄한 균형과 동일한 스타일 */
+      font-style: normal;
+      font-weight: 700;
+      line-height: 140%;
+      letter-spacing: -2.677px;
+    }
+
+    .progress-bar {
+      width: 150px;
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-left: 10px; /* 67.2% 텍스트 옆에 프로그레스 바 배치 */
+    }
+
+    .progress-bar .progress {
+      width: 67.2%;
+      height: 100%;
+      background-color: #F7828D;
+      border-radius: 10px;
+    }
+
+    /* 클릭 가능한 링크 스타일 */
+    .clickable-area {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      z-index: 15;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 메뉴 버튼 -->
+  <div class="menu-btn">
+    <img src="menu.svg" alt="menu" />
+  </div>
+
+  <!-- 콘텐츠 섹션 -->
+  <div class="content">
+    <h1>샌드위치는
+        <p>어떻게 구성되어 있을까요?</p></h1>
+    <a href="next-page.html" class="clickable-area"> <!-- 클릭 가능한 링크 -->
+      <div class="sandwich">
+        <img src="sandwich.png" alt="sandwich" />
+        <div class="touch-icon">
+          <img src="touch-icon.png" alt="touch" />
+        </div>
+        <div class="explore-text">알아보기</div> <!-- 알아보기 텍스트 -->
+      </div>
+    </a>
+  </div>
+
+  <!-- 하단 섹션 -->
+  <div class="bottom-section">
+    <div class="badge">
+      <div class="icon">
+        <img src="badge.png" alt="badge" /> <!-- 뱃지 이미지 -->
+      </div>
+      <div class="text">
+        <div>뱃지 획득</div>
+        <div>탄탄한 균형</div>
+      </div>
+    </div>
+    <div class="bonus">
+      <div class="icon">
+        <img src="water.png" alt="water" /> <!-- 수분 보너스 이미지 -->
+      </div>
+      <div class="text">
+        <div>수분 보너스</div>
+        <div>67.2%</div> <!-- 67.2% 텍스트 추가 -->
+        <div class="progress-bar"> <!-- 67.2% 옆에 프로그레스 바 추가 -->
+          <div class="progress"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
