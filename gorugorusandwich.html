@@ -56,8 +56,8 @@
       font-size: 56px;
       font-style: normal;
       font-weight: 900;
-      line-height: 143%; /* 80.08px */
-      letter-spacing: -3.36px;
+      line-height: 143%; /* 80px */
+      letter-spacing: -3px;
       margin-bottom: 20px;
     }
 
@@ -125,16 +125,15 @@
 
     /* "알아보기" 텍스트 */
     .explore-text {
-      margin-top: 20px; /* 아이콘과의 간격 조정 */
       color: #FFF;
       text-align: center;
       font-family: "Happiness Sans";
-      font-size: 33.464px;
+      font-size: 33px;
       font-style: normal;
       font-weight: 900;
       line-height: 140%; /* 46.85px */
-      letter-spacing: -2.008px;
-      margin-left: 20px; /* 20px 오른쪽으로 이동 */
+      letter-spacing: -2px;
+      margin-left: 10px; /* 10px 오른쪽으로 이동 */
     }
 
     /* 하단 뱃지와 보너스 섹션 */
@@ -147,8 +146,6 @@
       display: flex;
       justify-content: space-around;
       align-items: flex-start;
-      border-top-left-radius: 30px;
-      border-top-right-radius: 30px;
     }
 
     .badge, .bonus {
@@ -188,17 +185,17 @@
     .badge .text div:last-child {
       color: #272727;
       font-family: "Happiness Sans";
-      font-size: 44.624px;
+      font-size: 44px;
       font-style: normal;
       font-weight: 700;
       line-height: 140%;
-      letter-spacing: -2.677px;
+      letter-spacing: -2px;
     }
 
     /* 수분 보너스, 67.2% 텍스트 */
     .bonus .text {
       display: flex;
-      flex-direction: column; /* 텍스트를 세로로 배치 */
+      flex-direction: column;
       align-items: flex-start; /* 왼쪽 정렬 */
     }
 
@@ -209,18 +206,19 @@
       font-style: normal;
       font-weight: 900;
       line-height: 140%;
-      letter-spacing: -1.68px;
-      margin-bottom: 10px;
+      letter-spacing: -1px;
+      margin-right: 10px;
     }
 
     .bonus .text div:last-child {
       color: #272727;
       font-family: "Happiness Sans";
-      font-size: 44.624px; /* 탄탄한 균형과 동일한 스타일 */
+      font-size: 44px; /* 탄탄한 균형과 동일한 스타일 */
       font-style: normal;
       font-weight: 700;
       line-height: 140%;
-      letter-spacing: -2.677px;
+      letter-spacing: -2px;
+      margin-right: 10px;
     }
 
     .progress-bar {
@@ -229,7 +227,6 @@
       background-color: #ddd;
       border-radius: 10px;
       overflow: hidden;
-      margin-left: 10px; /* 67.2% 텍스트 옆에 프로그레스 바 배치 */
     }
 
     .progress-bar .progress {
@@ -237,6 +234,17 @@
       height: 100%;
       background-color: #F7828D;
       border-radius: 10px;
+    }
+
+    .bonus .percent {
+      color: #272727;
+      text-align: center;
+      font-family: "Happiness Sans";
+      font-size: 44px; /* 변경된 텍스트 크기 */
+      font-style: normal;
+      font-weight: 700;
+      line-height: 140%; /* 72.8px */
+      letter-spacing: -2px;
     }
 
     /* 클릭 가능한 링크 스타일 */
@@ -265,8 +273,8 @@
         <img src="sandwich.png" alt="sandwich" />
         <div class="touch-icon">
           <img src="touch-icon.png" alt="touch" />
+          <div class="explore-text">알아보기</div> <!-- "알아보기" 텍스트 -->
         </div>
-        <div class="explore-text">알아보기</div> <!-- 알아보기 텍스트 -->
       </div>
     </a>
   </div>
@@ -286,15 +294,15 @@
       <div class="icon">
         <img src="water.png" alt="water" /> <!-- 수분 보너스 이미지 -->
       </div>
-      <div class="text">
+      <div class="text" style="display: flex; align-items: center;">
         <div>수분 보너스</div>
-        <div>67.2%</div> <!-- 67.2% 텍스트 추가 -->
-        <div class="progress-bar"> <!-- 67.2% 옆에 프로그레스 바 추가 -->
+        <div class="percent" style="margin-right: 30px;">67.2%</div> <!-- 67.2% 텍스트 -->
+        <div class="progress-bar">
           <div class="progress"></div>
         </div>
       </div>
     </div>
   </div>
-
+  
 </body>
 </html>
