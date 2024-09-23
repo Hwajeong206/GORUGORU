@@ -79,6 +79,7 @@
       animation: float 3s ease-in-out infinite;
       transition: max-width 1s;
     }
+
     /* 샌드위치 크기 축소 */
     .sandwich.shrink {
       max-width: 650px; /* 축소 후 크기 */
@@ -267,34 +268,49 @@
     }
 
     .carbohydrate-info {
-      color: white;
-      text-align: center;
-    }
-    .carbohydrate-info h2,
-    .carbohydrate-info p {
-      font-family: "Happiness Sans";
-      font-size: 28px;
-      margin: 0;
-    }
+  position: absolute;
+  left: 800px; /* 샌드위치보다 오른쪽으로 조정 */
+  top: 47%; /* 수직 중앙 정렬 */
+  transform: translateY(-50%); /* 수직 중앙 정렬 */
+  color: #FFF; /* 텍스트 색상 */
+  text-align: center;
+}
 
-    /* sandwichinterior 애니메이션 */
-    .study-sandwich {
-      animation: float 3s ease-in-out infinite; /* 둥둥 떠다니는 애니메이션 추가 */
-      position: relative; /* 애니메이션을 적용하기 위한 상대적 위치 설정 */
-    }
+.text1 {
+  font-family: "Happiness Sans";
+  font-size: 45.207px;
+  font-weight: 700;
+  line-height: 140%; /* 63.289px */
+  letter-spacing: -2.712px;
+}
 
-    /* 이동 애니메이션 정의 */
-    .move-left {
-      animation: moveLeft 1s forwards;
-    }
-    @keyframes moveLeft {
-      from {
-        transform: translateX(0);
-      }
-      to {
-        transform: translateX(-250px); /* 250px 왼쪽으로 이동 */
-      }
-    }
+.text2 {
+  font-family: "Happiness Sans";
+  font-size: 33.905px;
+  font-weight: 700;
+  line-height: 140%; /* 47.467px */
+  letter-spacing: -2.034px;
+}
+
+
+  /* sandwichinterior 애니메이션 */
+  .study-sandwich {
+  position: absolute;
+  left: 50%; /* 가운데 정렬 */
+  transform: translateX(-50%); /* 중앙에서 시작 */
+  max-width:650px;
+}
+
+.move-left {
+  animation: moveLeft 1s forwards;
+}
+
+@keyframes moveLeft {
+  to {
+    left: 50px; /* 300px 더 왼쪽으로 이동 */
+    transform: none; /* 위치 고정 */
+  }
+}
 
      /* 아이패드 12.9인치 최적화를 위한 미디어 쿼리 */
      @media (max-height: 1024px) {
@@ -305,7 +321,6 @@
       .bottom-section { height: 200px; }
       .sandwichinterior { max-width: 650px; }
     }
-
   </style>
 </head>
 <body>
@@ -333,13 +348,13 @@
   <!-- Study 화면 -->
   <div class="study-screen" id="study-screen">
     <div class="sandwich study-sandwich" id="study-sandwich">
-      <img src="sandwichinterior.png" alt="샌드위치 내부" />
+      <img src="sandwichinterior.png" alt="샌드위치 내부" / style="max-width: 650px;">
     </div>
-    <div class="study-text" id="study-text">
-      <img src="carbohydrate.png" alt="탄수화물" />
-      <div>에너지 뿜뿜 탄수화물</div>
-      <div>탄수화물이 풍부하네요!</div>
-    </div>
+    <div class="carbohydrate-info">
+      <img src="carbohydrate.png" alt="탄수화물" style="width: 227.207px; height: 227.207px; transform: rotate(7.558deg; flex-shrink: 0;">
+      <div class="text1">에너지 뿜뿜 탄수화물</div>
+      <div class="text2">탄수화물이 풍부하네요!</div>
+    </div>    
   </div>
   <!-- 하단 섹션 -->
   <div class="bottom-section" id="bottom-section">
@@ -376,28 +391,33 @@
       document.querySelector('.changed-title').style.opacity = '1';
       // touch-icon 나타내기
       document.getElementById('touch-icon').classList.add('visible');
-    }, 3000);
+    }, 2000);
 
-    // 클릭 이벤트 추가
-    document.getElementById('clickable-area').addEventListener('click', (event) => {
-      event.preventDefault(); // 링크의 기본 동작 방지
+// 클릭 이벤트 추가
+document.getElementById('clickable-area').addEventListener('click', (event) => {
+  event.preventDefault();
 
-      // 기존 요소 숨기기
-      document.getElementById('sandwich').style.display = 'none';
-      document.getElementById('touch-icon').style.display = 'none';
-      document.querySelector('.explore-text').style.display = 'none';
-      
-      // Study 화면 보이기
-      document.getElementById('study-screen').style.display = 'flex';
+  // 기존 요소 숨기기
+  document.getElementById('sandwich').style.display = 'none';
+  document.getElementById('touch-icon').style.display = 'none';
 
-      // 샌드위치 이미지 변경 및 왼쪽으로 이동
-      const studySandwich = document.getElementById('study-sandwich');
-      studySandwich.classList.add('move-left'); // 애니메이션 클래스를 추가
-    });
- // 애니메이션 초기화 후 재적용
- studySandwich.style.animation = 'none'; // 애니메이션 초기화
-  void studySandwich.offsetWidth; // reflow
-  studySandwich.style.animation = 'float 3s ease-in-out infinite'; // 다시 설정
+  // Study 화면 보이기
+  document.getElementById('study-screen').style.display = 'flex';
+
+  // 샌드위치 이미지 변경 및 왼쪽으로 이동
+  const studySandwich = document.getElementById('study-sandwich');
+  studySandwich.classList.add('move-left');
+
+  // 이동이 끝나면 둥둥 떠다니는 애니메이션 시작
+// 이동이 끝나면 둥둥 떠다니는 애니메이션 시작
+studySandwich.addEventListener('animationend', () => {
+  studySandwich.style.left = '50px'; // 이동한 후 왼쪽 고정 (300px 더 왼쪽)
+  studySandwich.style.transform = 'translateY(-50%)'; // 수직 중앙에 고정
+  studySandwich.style.animation = 'float 3s ease-in-out infinite'; // 둥둥 떠다니는 애니메이션 재적용
+});
+});
+
+
   </script>
 </body>
 </html>
