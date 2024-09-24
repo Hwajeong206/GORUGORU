@@ -63,10 +63,6 @@
       width: 100%;
       height: auto;
       margin-top: -150px;
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-start;
-      flex-wrap: wrap;
       animation: float 3s ease-in-out infinite;
       transition: max-width 1s;
     }
@@ -94,7 +90,7 @@
   height: 1200px;
   background-color: #ffdb26dd;
   border-radius: 50%;
-  filter: blur(120px);  /* 블러 처리 */
+  filter: blur(100px);  /* 블러 처리 */
   transform: translate(-50%, -50%);
   z-index: -1;  /* 다른 요소보다 뒤에 배치 */
 }
@@ -116,8 +112,14 @@
             object-fit: cover;
         }
         .info {
+            position: fixed;
             display: inline-block;
+            display: flex;
+     justify-content: space-around;
+      align-items: flex-start;
+      flex-wrap: wrap;
             color: #202020;
+
 font-family: "Happiness Sans";
 font-size: 35px;
 font-style: normal;
