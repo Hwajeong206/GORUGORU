@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영양소 블록 화면</title>
+    <style>
+         @font-face {
+      font-family: 'Happiness-Sans-Title';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/Happiness-Sans-Title.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Happiness Sans', sans-serif;
+            background-color: #fee791;
+            text-align: center;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: top;
+            align-items: center;
+        }
+          /* 상단 메뉴 버튼 */
+    .menu-btn {
+      position: absolute;
+      top: 45px;
+      left: 60px;
+      width: 94.5px;
+      height: 84px;
+      background-color: white;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+     /* 텍스트와 올리브 이미지 섹션 */
+     .content {
+      text-align: center;
+      margin-top: 80px;
+    }
+    .content p {
+      color: #000000;
+      font-size: 70px;
+      font-family: "Happiness-Sans-Title";
+      line-height: 143%;
+      letter-spacing: -3.36px;
+      transition: font-size 1s, opacity 1s;
+    }
+
+     /* 올리브 이미지 */
+     .olive {
+      position: relative;
+      width: 100%;
+      max-width: 800px; /* 초기 크기 */
+      height: auto;
+      margin-top: -150px;
+      animation: float 3s ease-in-out infinite;
+      transition: max-width 1s;
+    }
+    .olive img {
+      position: relative;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      z-index: 1;
+    }
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-30px);
+      }
+    }
+    .background-blur {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  width: 1200px;  /* 원 크기 */
+  height: 1200px;
+  background-color: #ffdb26dd;
+  border-radius: 50%;
+  filter: blur(80px);  /* 블러 처리 */
+  transform: translate(-50%, -50%);
+  z-index: -1;  /* 다른 요소보다 뒤에 배치 */
+}
+
+        .item-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .item {
+            width: 150px;
+            height: 150px;
+            margin: 0 40px;
+            border-radius: 10px;
+        }
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .info {
+            display: inline-block;
+            color: #202020;
+font-family: "Happiness Sans";
+font-size: 35px;
+font-style: normal;
+font-weight: 700;
+line-height: 143%; /* 49.709px */
+letter-spacing: -1px;
+border-radius: 68.267px;
+  border: 1.219px solid #FFF;
+  background: linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: 4.876px 4.876px 48.762px 0px rgba(255, 184, 0, 0.50);
+  padding: 10px 20px; /* 필요에 따라 여백 조정 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  font-size: 20px; /* 텍스트 크기 */
+  font-weight: bold; /* 텍스트 굵기 */
+  color: black; /* 텍스트 색상 */
+  margin-bottom: 200px;
+}
+
+        
+           /* 아이패드 12.9인치 최적화를 위한 미디어 쿼리 */
+     @media (max-height: 1024px) {
+      .content p { font-size: 56px; }
+      .olive { max-width: 850px; }
+      .badge .icon img, .bonus .icon img { width: 120px; }
+      .bonus .percent { font-size: 36px; }
+      .bottom-section { height: 200px; }
+      .sandwichinterior { max-width: 650px; }
+    }
+    
+    </style>
+</head>
+<body>
+
+<div class="container">
+   <!-- 메뉴 버튼 -->
+  <div class="menu-btn">
+    <img src="menu2.svg" alt="menu" />
+  </div>
+
+  <div class="background-blur"></div>
+
+    <!-- 타이틀 -->
+    <div class="content">
+        <p class="title"> 영양소 블록을 쌓아 음식을 만들어봐요! </p>
+
+    <!-- 아이템 컨테이너 -->
+          <div class="olive" id="olive">
+        <img src="olive.png" alt="올리브" />
+    </div>
+
+    <!-- 정보 표시 -->
+    <div class="info">올리브 오일</div>
+    
+</div>
+
+</body>
+</html>
