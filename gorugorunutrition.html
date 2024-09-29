@@ -19,6 +19,7 @@
             font-family: 'Happiness-Sans-Title', sans-serif;
             background-color: #fee791;
             text-align: center;
+            overflow: hidden; /* 스크롤 차단 */
         }
 
         .container {
@@ -79,7 +80,6 @@
 font-family: "Happiness-Sans-Title";
 font-size: 35px;
 font-style: normal;
-font-weight: 700;
 line-height: 143%; /* 49.709px */
 letter-spacing: -1px;
 border-radius: 70px;
@@ -91,10 +91,12 @@ text-align: center;
 color: black;
 margin-top: 20px;
 max-width: 240px;
+position: absolute;
 left: 50%;
 transform: translate(-50%, -50%);
 margin-bottom: 190px;
 position: absolute;
+flex-direction: column;
 }
 
   
@@ -141,11 +143,10 @@ position: absolute;
            /* 아이패드 12.9인치 최적화를 위한 미디어 쿼리 */
      @media (max-height: 1024px) {
       .content p { font-size: 56px; }
-      .olive { max-width: 850px; }
+      .olive { max-width: 750px; }
       .badge .icon img, .bonus .icon img { width: 120px; }
       .bonus .percent { font-size: 36px; }
-      .bottom-section { height: 200px; }
-      .sandwichinterior { max-width: 650px; }
+      .bottom-section { margin-bottom: 190px; }
     }
     
     </style>
