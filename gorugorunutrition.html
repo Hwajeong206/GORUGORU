@@ -59,12 +59,13 @@
             align-items: center;
         }
 
-           /* 수평 배치 */
-           .horizontal-layout {
-            display: flex;
+    /* 수평 배치 */
+    .horizontal-layout {
+        display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 240px; /* 각 항목 사이의 간격 */
+            width: 100%; /* 부모 요소의 너비 설정 */
+            padding: 0 100px; /* 좌우 여백을 줘서 공간 확보 */
         }
 
         /* 텍스트와 올리브 이미지 섹션 */
@@ -85,7 +86,7 @@
         /* 올리브 이미지 */
         .olive img {
             margin-top: -30px;
-            max-width: 560px;
+            max-width: 500px;
             width: 100%;
             height: auto;
             object-fit: contain; /* 이미지가 잘리지 않게 조정 */
@@ -117,7 +118,7 @@
         /* 영양소 표시 */
         .carbon, .protein {
             display: inline-flex;
-            padding: 0px 30px 0px 10px;
+            padding: 0px 40px 0px 6px;
             align-items: center;
             gap: 16px;
             border-radius: 70px;
@@ -125,8 +126,7 @@
             margin-top: 20px; /* 추가: 영양소와의 간격 */
             position: absolute;
             bottom: 200px;
-            margin-left: 178px;
-            margin-right: 178px;
+            margin: 0 20px; /* 각 블록 사이의 여백 추가 */
         }
 
         .carbon {
@@ -178,7 +178,7 @@
         /* 아이패드 12.9인치 최적화를 위한 미디어 쿼리 */
         @media (max-height: 1024px) {
             .content p { font-size: 56px; }
-            .olive img { max-width: 560px; }
+            .olive img { max-width: 500px; }
             .info { font-size: 32px; margin-top: 20px; margin-bottom: 190px;}
         }
     </style>
@@ -203,10 +203,9 @@
             <img src="olive.png" alt="올리브" />
         </div>
 
+     <div class="horizontal-layout">
         <!-- 정보 표시 -->
         <div class="info">올리브 오일</div>
-
-    </div>
 
        <!-- 영양소 up/down -->
     <div class="carbon" id="carbon">
@@ -218,6 +217,7 @@
       <img src="protein.svg" alt="단백질"/>
       <span>+1</span>
   </div>
+</div>
 </div>
 
 </body>
