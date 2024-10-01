@@ -59,14 +59,72 @@
             align-items: center;
         }
 
-    /* 수평 배치 */
-    .horizontal-layout {
-        display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%; /* 부모 요소의 너비 설정 */
-            padding: 0 100px; /* 좌우 여백을 줘서 공간 확보 */
+ /* 수평 배치 */
+ .horizontal-layout {
+            display: flex;
+            justify-content: center; /* 가운데 정렬 */
+            align-items: center; /* 세로 가운데 정렬 */
+            gap: 20px; /* 블록 사이 간격 */
+            margin-top: 30px;
         }
+
+        /* 영양소 표시 */
+        .carbon, .protein {
+            display: inline-flex;
+            padding: 0px 40px 0px 6px;
+            align-items: center;
+            gap: 16px;
+            border-radius: 70px;
+            max-width: 140px;
+            margin-top: 20px; /* 추가: 영양소와의 간격 */
+            position: absolute;
+            top: 759px; /* Y축 고정 */
+        }
+
+
+.carbon {
+    background-color: #FFACAC;
+    left: 178px; /* 탄수화물 블럭 X축 */
+}
+
+.protein {
+    background-color: #83C0FE;
+    left: 1046px; /* 단백질 블럭 X축 */
+}
+
+.info {
+    position: absolute;
+            top: 759px;
+            left: 564px;
+    font-family: "Happiness-Sans-Title";
+            font-size: 35px;
+            line-height: 143%;
+            letter-spacing: -1px;
+            border-radius: 70px;
+            border: 1.5px solid #FFF;
+            background: linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 4.876px 4.876px 48.762px 0px rgba(255, 184, 0, 0.50);
+            padding: 16px 30px;
+            text-align: center;
+            color: black;
+            margin-top: 20px; /* 이미지와 텍스트 사이의 간격 */
+            max-width: 240px;
+}
+
+/* 이미지 크기 및 간격 설정 유지 */
+.carbon img, .protein img {
+    width: 80px;
+    height: 80px;
+    margin-right: -20px;
+}
+.carbon span, .protein span {
+            color: #FFF;
+            font-family: "Happiness-Sans-Title";
+            font-size: 34px;
+            line-height: 143%;
+            letter-spacing: -2.086px;
+        }
+
 
         /* 텍스트와 올리브 이미지 섹션 */
         .content {
@@ -115,43 +173,7 @@
             transform: translate(-50%);
         }
 
-        /* 영양소 표시 */
-        .carbon, .protein {
-            display: inline-flex;
-            padding: 0px 40px 0px 6px;
-            align-items: center;
-            gap: 16px;
-            border-radius: 70px;
-            max-width: 140px;
-            margin-top: 20px; /* 추가: 영양소와의 간격 */
-            position: absolute;
-            bottom: 200px;
-            margin: 0 20px; /* 각 블록 사이의 여백 추가 */
-        }
-
-        .carbon {
-            background: #FFACAC;
-        }
-
-        .protein {
-            background: #83C0FE;
-        }
-
-        .carbon img, .protein img {
-            width: 80px;
-            height: 80px;
-            margin-right: -20px; /* 이미지와 텍스트 사이 간격 */
-        }
-
-        .carbon span, .protein span {
-            color: #FFF;
-            font-family: "Happiness-Sans-Title";
-            font-size: 34px;
-            line-height: 143%;
-            letter-spacing: -2.086px;
-        }
-
-
+    
         /* 블러 처리된 원 */
         .background-blur {
             position: absolute;
