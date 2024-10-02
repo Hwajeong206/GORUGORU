@@ -297,7 +297,7 @@
 </div>
 
 <script>
-    
+
     document.addEventListener('DOMContentLoaded', function () {
     // WebSerial API 지원 여부 확인
     if ('serial' in navigator) {
@@ -313,18 +313,18 @@
         console.error('Web Serial API is not supported in this browser.');
     }
 
-    // 시리얼 데이터를 읽는 루프 함수
     async function readLoop(reader) {
-        while (true) {
-            const { value, done } = await reader.read();
-            if (done) {
-                break;
-            }
-            const decodedText = new TextDecoder().decode(value).trim();
-            console.log(decodedText);  // 읽어온 태그 데이터를 콘솔에 출력
-            handleRFIDTag(decodedText);  // 받은 태그 데이터를 처리
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+            break;
         }
+        console.log("데이터 읽기 성공"); // 이 줄을 추가하여 확인
+        const decodedText = new TextDecoder().decode(value).trim();
+        console.log(decodedText);  // 태그 데이터를 콘솔에 출력
+        handleRFIDTag(decodedText);
     }
+}
 
     // RFID 태그 데이터 처리 함수
     function handleRFIDTag(tag) {
@@ -347,7 +347,8 @@
     }, 2000);
 });
 
-    
+</script>
 
 </body>
 </html>
+ 
