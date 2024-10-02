@@ -14,13 +14,11 @@
             font-display: swap;
         }
 
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
@@ -59,8 +57,8 @@
             align-items: center;
         }
 
- /* 수평 배치 */
- .horizontal-layout {
+        /* 수평 배치 */
+        .horizontal-layout-nutrition {
             display: flex;
             justify-content: center; /* 가운데 정렬 */
             align-items: center; /* 세로 가운데 정렬 */
@@ -81,22 +79,21 @@
             top: 600px; /* Y축 고정 */
         }
 
+        .carbon {
+            background-color: #FFACAC;
+            left: 178px; /* 탄수화물 블럭 X축 */
+        }
 
-.carbon {
-    background-color: #FFACAC;
-    left: 178px; /* 탄수화물 블럭 X축 */
-}
+        .protein {
+            background-color: #83C0FE;
+            left: 1046px; /* 단백질 블럭 X축 */
+        }
 
-.protein {
-    background-color: #83C0FE;
-    left: 1046px; /* 단백질 블럭 X축 */
-}
-
-.info {
-    position: absolute;
+        .info {
+            position: absolute;
             top: 600px;
             left: 564px;
-    font-family: "Happiness-Sans-Title";
+            font-family: "Happiness-Sans-Title";
             font-size: 35px;
             line-height: 143%;
             letter-spacing: -1px;
@@ -109,15 +106,15 @@
             color: black;
             margin-top: 20px; /* 이미지와 텍스트 사이의 간격 */
             max-width: 240px;
-}
+        }
 
-/* 이미지 크기 및 간격 설정 유지 */
-.carbon img, .protein img {
-    width: 80px;
-    height: 80px;
-    margin-right: -20px;
-}
-.carbon span, .protein span {
+        /* 이미지 크기 및 간격 설정 유지 */
+        .carbon img, .protein img {
+            width: 80px;
+            height: 80px;
+            margin-right: -20px;
+        }
+        .carbon span, .protein span {
             color: #FFF;
             font-family: "Happiness-Sans-Title";
             font-size: 34px;
@@ -125,6 +122,36 @@
             letter-spacing: -2.086px;
         }
 
+        .horizontal-layout-images {
+            display: flex;
+            justify-content: center; /* 가운데 정렬 */
+            align-items: center; /* 세로 가운데 정렬 */
+            gap: 100px; /* 옥수수와 버터 이미지 간 간격 */
+        }
+
+        .corn, .butter {
+            display: inline-flex;
+            align-items: center;
+            position: absolute;
+            top: 200px; /* Y축 고정 */
+        }
+
+        .corn img, .butter img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            object-fit: contain; /* 이미지가 잘리지 않게 조정 */
+            z-index: 1;
+            margin-right: -20px;
+        }
+
+        .corn {
+            left: 83px;
+        }
+
+        .butter {
+            left: 900px;
+        }
 
         /* 텍스트와 올리브 이미지 섹션 */
         .content {
@@ -153,7 +180,20 @@
             animation: float 3s ease-in-out infinite;
         }
 
-    
+        .nutritionblock img{
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+            object-fit: contain; /* 이미지가 잘리지 않게 조정 */
+            z-index: 1;
+            position: absolute;
+            top: 800px;
+            display: flex;
+            justify-content: center; /* 가운데 정렬 */
+            align-items: center; /* 세로 가운데 정렬 */
+            left: 367px;
+        }
+
         /* 블러 처리된 원 */
         .background-blur {
             position: absolute;
@@ -181,7 +221,9 @@
         @media (max-height: 1024px) {
             .content p { font-size: 56px; }
             .olive img { max-width: 500px; }
-            .info { font-size: 32px; margin-top: 20px; margin-bottom: 190px;}
+            .corn img { max-width: 400px; }
+            .butter img { max-width: 400px; }
+            .info { font-size: 32px; margin-top: 20px; margin-bottom: 190px; }
         }
     </style>
 </head>
@@ -205,21 +247,39 @@
             <img src="olive.png" alt="올리브" />
         </div>
 
-     <div class="horizontal-layout">
-        <!-- 정보 표시 -->
-        <div class="info">올리브 오일</div>
+        <div class="horizontal-layout-nutrition">
+            <!-- 정보 표시 -->
+            <div class="info">올리브 오일</div>
 
-       <!-- 영양소 up/down -->
-    <div class="carbon" id="carbon">
-      <img src="carbon.svg" alt="탄수화물"/>
-      <span>-1</span>
-  </div>
+            <!-- 영양소 up/down -->
+            <div class="carbon" id="carbon">
+                <img src="carbon.svg" alt="탄수화물"/>
+                <span>-1</span>
+            </div>
 
-  <div class="protein" id="protein">
-      <img src="protein.svg" alt="단백질"/>
-      <span>+1</span>
-  </div>
-</div>
+            <div class="protein" id="protein">
+                <img src="protein.svg" alt="단백질"/>
+                <span>+1</span>
+            </div>
+        </div>
+
+        <div class="horizontal-layout-images">
+            <!-- 옥수수 이미지 -->
+            <div class="corn">
+                <img src="cornblur.png" alt="옥수수" />
+            </div>
+
+            <!-- 버터 이미지 -->
+            <div class="butter">
+                <img src="butterblur.png" alt="버터" />
+            </div>
+        </div>
+
+        <div class="nutritionblock">
+            <img src="bottomblock1.png" alt="영양소블록"/>
+
+
+    </div>
 </div>
 
 </body>
