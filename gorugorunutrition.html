@@ -129,20 +129,34 @@
             gap: 100px; /* 아보카도와 버터 이미지 간 간격 */
         }
 
-        .avocado, .butter {
+        .avocado{
             display: inline-flex;
             align-items: center;
             position: absolute;
-            top: 200px; /* Y축 고정 */
+            top: 300px; /* Y축 고정 */
+        }
+
+        .butter {
+            display: inline-flex;
+            align-items: center;
+            position: absolute;
+            top: 250px; /* Y축 고정 */
         }
 
         .avocado img, .butter img {
-            max-width: 400px;
+            max-width: 300px;
             width: 100%;
             height: auto;
             object-fit: contain; /* 이미지가 잘리지 않게 조정 */
             z-index: 1;
             margin-right: -20px;
+            filter: blur(15px); /* 블러 적용 */
+            opacity: 0.7; /* 투명도 70% */  transition: filter 0.5s ease, opacity 0.5s ease; /* 전환 효과 */
+        }
+
+        .avocado img:hover, .butter img:hover {
+            filter: blur(0); /* 블러 제거 */
+            opacity: 1; /* 투명도 100% */
         }
 
         .avocado {
@@ -221,7 +235,7 @@
         @media (max-height: 1024px) {
             .content p { font-size: 56px; }
             .olive img { max-width: 500px; }
-            .corn img { max-width: 400px; }
+            .avocado img { max-width: 300px; }
             .butter img { max-width: 400px; }
             .info { font-size: 32px; margin-top: 20px; margin-bottom: 190px; }
         }
