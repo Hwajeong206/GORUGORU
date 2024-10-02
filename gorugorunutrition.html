@@ -222,6 +222,18 @@
             z-index: -1;  /* 다른 요소보다 뒤에 배치 */
         }
 
+        #connect{
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0; /* 버튼을 투명하게 만듦 */
+            width: 100px;
+            height: 50px;
+            cursor: pointer; /* 커서가 버튼 위에 있을 때 포인터 모양으로 표시 */
+        }
+
+
+
         @keyframes float {
             0%, 100% {
                 transform: translateY(0);
@@ -242,6 +254,8 @@
     </style>
 </head>
 <body>
+
+<button id="connect">connect</button>
 
 <div class="container">
     <!-- 메뉴 버튼 -->
@@ -291,9 +305,7 @@
 
         <div class="nutritionblock">
             <img src="bottomblock1.png" alt="영양소블록"/>
-
-
-    </div>
+    </div>    
 </div>
 
 <script>
@@ -351,4 +363,3 @@
 
 </body>
 </html>
- 
