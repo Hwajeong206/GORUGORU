@@ -296,5 +296,46 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 시리얼 데이터를 받는 함수
+      if ('serial' in navigator) {
+        navigator.serial.requestPort().then(port => {
+          return port.open({ baudRate: 9600 });
+        }).then(port => {
+          const reader = port.readable.getReader();
+          return readLoop(reader);
+        });
+      }
+  
+      async function readLoop(reader) {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) {
+            break;
+          }
+          const decodedText = new TextDecoder().decode(value).trim();
+          handleRFIDTag(decodedText);  // 받은 태그 데이터를 처리
+        }
+      }
+  
+      function handleRFIDTag(tag) {
+        if (tag === "단백질1") {
+          document.querySelector('.info').innerText = "단백질 1 활성화";
+          // 여기서 이미지나 텍스트를 단백질 1에 맞게 변경
+        } else if (tag === "단백질2") {
+          document.querySelector('.info').innerText = "단백질 2 활성화";
+          // 단백질 2 화면 업데이트
+        } else if (tag === "단백질3") {
+          document.querySelector('.info').innerText = "단백질 3 활성화";
+          // 단백질 3 화면 업데이트
+        } else {
+          document.querySelector('.info').innerText = "알 수 없는 태그";
+        }
+      }
+    });
+  </script>
+  
+
 </body>
 </html>
