@@ -328,12 +328,12 @@
         // RFID 태그 데이터 처리 함수
         function handleRFIDTag(tag) {
     console.log(tag);  // 태그 값을 콘솔에 출력
-    if (tag === "단백질1") {
+    if (tag === "5390718B") {
         document.getElementById("nutritionblock").src = "bottomblock2.png";  
         document.getElementById("info").innerText = "버터";  
-    } else if (tag === "단백질2") {
+    } else if (tag === "C002D958") {
         document.getElementById("info").innerText = "단백질 2 활성화";
-    } else if (tag === "단백질3") {
+    } else if (tag === "C2765B54") {
         document.getElementById("info").innerText = "단백질 3 활성화";
     } else {
         document.getElementById("info").innerText = "알 수 없는 태그";
