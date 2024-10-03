@@ -222,17 +222,6 @@
             z-index: -1;  /* 다른 요소보다 뒤에 배치 */
         }
 
-        #connect{
-            position: absolute;
-            top: 800px;
-            right: 30px;
-            opacity:0; /* 버튼을 투명하게 만듦 */
-            width: 100px;
-            height: 50px;
-            cursor: pointer; /* 커서가 버튼 위에 있을 때 포인터 모양으로 표시 */
-        }
-
-
 
         @keyframes float {
             0%, 100% {
@@ -254,8 +243,6 @@
     </style>
 </head>
 <body>
-
-<button id="connect">connect</button>
 
 <div class="container">
     <!-- 메뉴 버튼 -->
@@ -309,56 +296,59 @@
 </div>
 
 <script>
-
     document.addEventListener('DOMContentLoaded', function () {
-    // WebSerial API 지원 여부 확인
-    if ('serial' in navigator) {
-        navigator.serial.requestPort().then(port => {
-            return port.open({ baudRate: 9600 });
-        }).then(port => {
-            const reader = port.readable.getReader();
-            return readLoop(reader);
-        }).catch(err => {
-            console.error('Error opening serial port:', err);
-        });
-    } else {
-        console.error('Web Serial API is not supported in this browser.');
-    }
+        // 페이지 첫 클릭 시 시리얼 포트 연결 요청
+        document.body.addEventListener('click', connectSerial, { once: true });
 
-    async function readLoop(reader) {
-    while (true) {
-        const { value, done } = await reader.read();
-        if (done) {
-            break;
+        async function connectSerial() {
+            if ('serial' in navigator) {
+                try {
+                    const port = await navigator.serial.requestPort();
+                    await port.open({ baudRate: 9600 });
+                    const reader = port.readable.getReader();
+                    await readLoop(reader);
+                } catch (err) {
+                    console.error('Error opening serial port:', err);
+                }
+            } else {
+                console.error('Web Serial API is not supported in this browser.');
+            }
         }
-        console.log("데이터 읽기 성공"); // 이 줄을 추가하여 확인
-        const decodedText = new TextDecoder().decode(value).trim();
-        console.log(decodedText);  // 태그 데이터를 콘솔에 출력
-        handleRFIDTag(decodedText);
+
+        async function readLoop(reader) {
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) {
+                    break;
+                }
+                const decodedText = new TextDecoder().decode(value).trim();
+                handleRFIDTag(decodedText);
+            }
+        }
+
+        function handleRFIDTag(tag) {
+    const infoElement = document.querySelector(".info");  // info 클래스에 접근
+    if (!infoElement) {
+        console.error("info 요소를 찾을 수 없습니다.");
+        return;
     }
+    
+    console.log(infoElement); // infoElement가 제대로 선택되었는지 확인
+    console.log(document.querySelector(".nutritionblock img")); // 이미지 요소가 올바르게 선택되었는지 확인
+
+
+    console.log(tag);  // 태그 값을 콘솔에 출력
+    if (tag === "5390718B") {
+        document.querySelector(".nutritionblock img").src = "bottomblock2.png";
+infoElement.innerText = "버터";
+    } else if (tag === "C002D958") {
+        infoElement.innerText = "단백질 2 활성화";
+    } else if (tag === "C2765B54") {
+        infoElement.innerText = "단백질 3 활성화";
+    } 
 }
 
-    // RFID 태그 데이터 처리 함수
-    function handleRFIDTag(tag) {
-        console.log(tag);  // 태그 값을 콘솔에 출력
-        if (tag === "단백질1") {
-            document.getElementById("nutritionblock").src = "bottomblock2.png";  
-            document.getElementById("info").innerText = "버터";  
-        } else if (tag === "C002D958") {
-            document.getElementById("info").innerText = "단백질 2 활성화";
-        } else if (tag === "C2765B54") {
-            document.getElementById("info").innerText = "단백질 3 활성화";
-        } else {
-            document.getElementById("info").innerText = "알 수 없는 태그";
-        }
-    }
-
-    // 테스트: 2초 후 "단백질1" 태그 감지 시뮬레이션
-    setTimeout(() => {
-        handleRFIDTag("단백질1");  // 단백질1 태그가 감지된 상황을 시뮬레이션
-    }, 2000);
-});
-
+    });
 </script>
 
 </body>
