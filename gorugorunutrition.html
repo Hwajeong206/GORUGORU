@@ -296,59 +296,65 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // 페이지 첫 클릭 시 시리얼 포트 연결 요청
-        document.body.addEventListener('click', connectSerial, { once: true });
+document.addEventListener('DOMContentLoaded', function () {
+    // 페이지 첫 클릭 시 시리얼 포트 연결 요청
+    document.body.addEventListener('click', connectSerial, { once: true });
 
-        async function connectSerial() {
-            if ('serial' in navigator) {
-                try {
-                    const port = await navigator.serial.requestPort();
-                    await port.open({ baudRate: 9600 });
-                    const reader = port.readable.getReader();
-                    await readLoop(reader);
-                } catch (err) {
-                    console.error('Error opening serial port:', err);
-                }
-            } else {
-                console.error('Web Serial API is not supported in this browser.');
+    async function connectSerial() {
+        if ('serial' in navigator) {
+            try {
+                const port = await navigator.serial.requestPort();
+                await port.open({ baudRate: 9600 });
+                const reader = port.readable.getReader();
+                await readLoop(reader);
+            } catch (err) {
+                console.error('Error opening serial port:', err);
             }
+        } else {
+            console.error('Web Serial API is not supported in this browser.');
         }
-
-        async function readLoop(reader) {
-            while (true) {
-                const { value, done } = await reader.read();
-                if (done) {
-                    break;
-                }
-                const decodedText = new TextDecoder().decode(value).trim();
-                handleRFIDTag(decodedText);
-            }
-        }
-
-        function handleRFIDTag(tag) {
-    const infoElement = document.querySelector(".info");  // info 클래스에 접근
-    if (!infoElement) {
-        console.error("info 요소를 찾을 수 없습니다.");
-        return;
     }
-    
-    console.log(infoElement); // infoElement가 제대로 선택되었는지 확인
-    console.log(document.querySelector(".nutritionblock img")); // 이미지 요소가 올바르게 선택되었는지 확인
 
+    async function readLoop(reader) {
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) {
+                break;
+            }
+            const decodedText = new TextDecoder().decode(value).trim();
+            handleRFIDTag(decodedText);  // RFID 태그 값 처리 함수 호출
+        }
+    }
 
-    console.log(tag);  // 태그 값을 콘솔에 출력
-    if (tag === "5390718B") {
-        document.querySelector(".nutritionblock img").src = "bottomblock2.png";
-infoElement.innerText = "버터";
-    } else if (tag === "C002D958") {
-        infoElement.innerText = "단백질 2 활성화";
-    } else if (tag === "C2765B54") {
-        infoElement.innerText = "단백질 3 활성화";
-    } 
-}
+    function handleRFIDTag(tag) {
+        const infoElement = document.querySelector(".info");
+        const imgElement = document.querySelector(".nutritionblock img"); // 수정된 부분
 
-    });
+        // infoElement와 imgElement가 제대로 선택되었는지 확인
+        if (!infoElement) {
+            console.error("info 요소를 찾을 수 없습니다.");
+            return;
+        }
+        if (!imgElement) {
+            console.error("이미지 요소를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 콘솔에 태그 값 출력
+        console.log("RFID 태그 값:", tag);
+
+        // 태그 값에 따른 이미지 및 텍스트 변경
+        if (tag === "5390718B") {
+            imgElement.src = "bottomblock2.png";  // 이미지 변경
+            imgElement.onload = () => console.log("Image updated successfully");
+            infoElement.innerText = "버터";  // 텍스트 변경
+        } else if (tag === "C002D958") {
+            infoElement.innerText = "단백질 2 활성화";
+        } else if (tag === "C2765B54") {
+            infoElement.innerText = "단백질 3 활성화";
+        }
+    }
+});
 </script>
 
 </body>
