@@ -14,7 +14,7 @@ const io = socketIO(server);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 시리얼 포트 초기화 (포트 이름은 실제 환경에 맞게 변경하세요)
-const port = new SerialPort('/dev/ttyUSB0', { baudRate: 9600 });
+const port = new SerialPort('/dev/tty.wchusbserial210', { baudRate: 9600 });
 
 // 시리얼 데이터 수신 시 이벤트 발생
 port.on('data', (data) => {
