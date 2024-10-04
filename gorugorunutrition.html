@@ -244,57 +244,58 @@
 </head>
 <body>
     
-<div class="container">
-    <!-- 메뉴 버튼 -->
-    <div class="menu-btn">
-        <img src="menu2.svg" alt="menu" />
+    <div class="container">
+        <!-- 메뉴 버튼 -->
+        <div class="menu-btn">
+            <img src="menu2.svg" alt="menu" />
+        </div>
+    
+        <!-- 블러 처리된 원 -->
+        <div class="background-blur"></div>
+    
+        <!-- 타이틀 -->
+        <div class="content">
+            <p class="title">영양소 블록을 쌓아 음식을 만들어봐요!</p>
+    
+            <!-- 아이템 컨테이너 -->
+            <div class="olive" id="olive">
+                <img src="olive.png" alt="올리브" />
+            </div>
+    
+            <div class="horizontal-layout-nutrition">
+                <!-- 정보 표시 -->
+                <div id="info-text" class="info">올리브 오일</div>
+    
+                <!-- 영양소 up/down -->
+                <div class="carbon" id="carbon">
+                    <img src="carbon.svg" alt="탄수화물"/>
+                    <span>-1</span>
+                </div>
+    
+                <div class="protein" id="protein">
+                    <img src="protein.svg" alt="단백질"/>
+                    <span>+1</span>
+                </div>
+            </div>
+    
+            <div class="horizontal-layout-images">
+                <!-- 아보카드 이미지 -->
+                <div class="avocado">
+                    <img src="avocado.png" alt="아보카도" />
+                </div>
+    
+                <!-- 버터 이미지 -->
+                <div class="butter">
+                    <img src="butter.png" alt="버터" />
+                </div>
+            </div>
+    
+            <div class="nutritionblock">
+                <img id="image-block" src="bottomblock1.png" alt="영양소블록"/>
+            </div>
+            
     </div>
-
-    <!-- 블러 처리된 원 -->
-    <div class="background-blur"></div>
-
-    <!-- 타이틀 -->
-    <div class="content">
-        <p class="title">영양소 블록을 쌓아 음식을 만들어봐요!</p>
-
-        <!-- 아이템 컨테이너 -->
-        <div class="olive" id="olive">
-            <img src="olive.png" alt="올리브" />
-        </div>
-
-        <div class="horizontal-layout-nutrition">
-            <!-- 정보 표시 -->
-            <div id="info-text" class="info">올리브 오일</div>
-
-            <!-- 영양소 up/down -->
-            <div class="carbon" id="carbon">
-                <img src="carbon.svg" alt="탄수화물"/>
-                <span>탄수화물</span>
-            </div>
-            <div class="protein" id="protein">
-                <img src="protein.svg" alt="단백질"/>
-                <span>단백질</span>
-            </div>
-        </div>
-
-        <!-- 이미지 섹션 -->
-        <div class="horizontal-layout-images">
-            <!-- 아보카도 -->
-            <div class="avocado">
-                <img src="avocado.png" alt="아보카도">
-            </div>
-            <!-- 버터 -->
-            <div class="butter">
-                <img src="butter.png" alt="버터">
-            </div>
-        </div>
-
-        <div class="nutritionblock">
-            <img src="bottomblock1.png" id="bottomblock" alt="하단블록"/>
-        </div>
-    </div>
-</div>
-
+    
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io();
