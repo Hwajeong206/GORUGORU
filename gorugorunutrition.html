@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script src="/socket.io/socket.io.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영양소 블록 화면</title>
@@ -194,7 +195,7 @@
             animation: float 3s ease-in-out infinite;
         }
 
-        .nutritionblock img{
+        .nutritionblock img {
             max-width: 600px;
             width: 100%;
             height: auto;
@@ -242,6 +243,7 @@
         }
     </style>
 </head>
+
 <body>
     
     <div class="container">
@@ -264,59 +266,38 @@
     
             <div class="horizontal-layout-nutrition">
                 <!-- 정보 표시 -->
-                <div id="info-text" class="info">올리브 오일</div>
-    
-                <!-- 영양소 up/down -->
-                <div class="carbon" id="carbon">
-                    <img src="carbon.svg" alt="탄수화물"/>
-                    <span>-1</span>
-                </div>
-    
-                <div class="protein" id="protein">
-                    <img src="protein.svg" alt="단백질"/>
-                    <span>+1</span>
-                </div>
+                <div id="info-text" class="info">올리브유</div>
+                <div id="image-block" class="nutritionblock"><img src="bottomblock1.png" alt="영양소 블록 이미지" /></div>
             </div>
+        </div>
     
-            <div class="horizontal-layout-images">
-                <!-- 아보카드 이미지 -->
-                <div class="avocado">
-                    <img src="avocado.png" alt="아보카도" />
-                </div>
-    
-                <!-- 버터 이미지 -->
-                <div class="butter">
-                    <img src="butter.png" alt="버터" />
-                </div>
+        <!-- 이미지 섹션 -->
+        <div class="horizontal-layout-images">
+            <div class="avocado">
+                <img src="avocado.png" alt="아보카도" />
             </div>
-    
-            <div class="nutritionblock">
-                <img id="image-block" src="bottomblock1.png" alt="영양소블록"/>
+            <div class="butter">
+                <img src="butter.png" alt="버터" />
             </div>
-            
+        </div>
     </div>
     
-<script src="/socket.io/socket.io.js"></script>
-<script>
-    const socket = io();
+    <script>
+        const socket = io.connect('http://localhost:3000'); // 서버 URL 설정
+        const bottomBlockImage = document.getElementById("image-block").querySelector("img"); // 이미지 가져오기
 
-    socket.on('serial-data', function(data) {
-        console.log('Received serial data:', data);
-        const infoText = document.getElementById('info-text');
-        const bottomBlockImage = document.getElementById('bottomblock');
-
-        if (data === '단백질1') {
-            infoText.innerText = '버터';
-            bottomBlockImage.src = 'bottomblock2.png';
-        } else if (data === '단백질2') {
-            infoText.innerText = '탄수화물';
-            bottomBlockImage.src = 'bottomblock3.png';
-        } else if (data === '단백질3') {
-            infoText.innerText = '단백질';
-            bottomBlockImage.src = 'bottomblock4.png';
-        }
-    });
-</script>
-
+        socket.on('rfid', function(tag) {
+            if (tag === '단백질1') {
+                bottomBlockImage.src = 'bottomblock2.png';
+                document.getElementById('info-text').innerText = '버터'; // 변경된 텍스트
+            } else if (tag === '단백질2') {
+                bottomBlockImage.src = 'bottomblock3.png';
+                document.getElementById('info-text').innerText = '아보카도'; // 변경된 텍스트
+            } else if (tag === '단백질3') {
+                bottomBlockImage.src = 'bottomblock1.png';
+                document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
+            }
+        });
+    </script>
 </body>
 </html>
