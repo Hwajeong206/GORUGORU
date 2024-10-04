@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영양소 블록 화면</title>
 
+    
     <style>
         @font-face {
             font-family: 'Happiness-Sans-Title';
@@ -195,7 +196,7 @@
             animation: float 3s ease-in-out infinite;
         }
 
-        .nutritionblock img {
+        .nutritionblock img{
             max-width: 600px;
             width: 100%;
             height: auto;
@@ -243,61 +244,74 @@
         }
     </style>
 </head>
-
 <body>
-    
-    <div class="container">
-        <!-- 메뉴 버튼 -->
-        <div class="menu-btn">
-            <img src="menu2.svg" alt="menu" />
+
+<div class="container">
+    <!-- 메뉴 버튼 -->
+    <div class="menu-btn">
+        <img src="menu2.svg" alt="menu" />
+    </div>
+
+    <!-- 블러 처리된 원 -->
+    <div class="background-blur"></div>
+
+    <!-- 타이틀 -->
+    <div class="content">
+        <p class="title">영양소 블록을 쌓아 음식을 만들어봐요!</p>
+
+        <!-- 아이템 컨테이너 -->
+        <div class="olive" id="olive">
+            <img src="olive.png" alt="올리브" />
         </div>
-    
-        <!-- 블러 처리된 원 -->
-        <div class="background-blur"></div>
-    
-        <!-- 타이틀 -->
-        <div class="content">
-            <p class="title">영양소 블록을 쌓아 음식을 만들어봐요!</p>
-    
-            <!-- 아이템 컨테이너 -->
-            <div class="olive" id="olive">
-                <img src="olive.png" alt="올리브" />
+
+        <div class="horizontal-layout-nutrition">
+            <!-- 정보 표시 -->
+            <div id="info-text" class="info">올리브 오일</div>
+
+            <!-- 영양소 up/down -->
+            <div class="carbon" id="carbon">
+                <img src="carbon.svg" alt="탄수화물"/>
+                <span>-1</span>
             </div>
-    
-            <div class="horizontal-layout-nutrition">
-                <!-- 정보 표시 -->
-                <div id="info-text" class="info">올리브유</div>
-                <div id="image-block" class="nutritionblock"><img src="bottomblock1.png" alt="영양소 블록 이미지" /></div>
+
+            <div class="protein" id="protein">
+                <img src="protein.svg" alt="단백질"/>
+                <span>+1</span>
             </div>
         </div>
-    
-        <!-- 이미지 섹션 -->
+
         <div class="horizontal-layout-images">
+            <!-- 아보카드 이미지 -->
             <div class="avocado">
                 <img src="avocado.png" alt="아보카도" />
             </div>
+
+            <!-- 버터 이미지 -->
             <div class="butter">
                 <img src="butter.png" alt="버터" />
             </div>
         </div>
-    </div>
-    
-    <script>
-        const socket = io.connect('http://localhost:3000'); // 서버 URL 설정
-        const bottomBlockImage = document.getElementById("image-block").querySelector("img"); // 이미지 가져오기
 
-        socket.on('rfid', function(tag) {
-            if (tag === '단백질1') {
-                bottomBlockImage.src = 'bottomblock2.png';
-                document.getElementById('info-text').innerText = '버터'; // 변경된 텍스트
-            } else if (tag === '단백질2') {
-                bottomBlockImage.src = 'bottomblock3.png';
-                document.getElementById('info-text').innerText = '아보카도'; // 변경된 텍스트
-            } else if (tag === '단백질3') {
-                bottomBlockImage.src = 'bottomblock1.png';
-                document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
-            }
-        });
-    </script>
+        <div id="image-block" class="nutritionblock"><img src="bottomblock1.png" alt="영양소 블록 이미지" /></div>
+</div>
+
+<script>
+    const socket = io.connect('https://nutritionblock.netlify.app'); // 서버 URL 설정
+    const bottomBlockImage = document.getElementById("image-block").querySelector("img"); // 이미지 가져오기
+
+    socket.on('rfid', function(tag) {
+        if (tag === '단백질1') {
+            bottomBlockImage.src = 'bottomblock2.png';
+            document.getElementById('info-text').innerText = '버터'; // 변경된 텍스트
+        } else if (tag === '단백질2') {
+            bottomBlockImage.src = 'bottomblock3.png';
+            document.getElementById('info-text').innerText = '아보카도'; // 변경된 텍스트
+        } else if (tag === '단백질3') {
+            bottomBlockImage.src = 'bottomblock1.png';
+            document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
+        }
+    });
+</script>
+
 </body>
 </html>
