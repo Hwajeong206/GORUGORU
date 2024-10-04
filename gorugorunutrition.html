@@ -300,13 +300,13 @@
     const bottomBlockImage = document.getElementById("image-block").querySelector("img"); // 이미지 가져오기
 
     socket.on('rfid', function(tag) {
-        if (tag === '단백질1') {
+        if (tag === '5390718B') {
             bottomBlockImage.src = 'bottomblock2.png';
             document.getElementById('info-text').innerText = '버터'; // 변경된 텍스트
-        } else if (tag === '단백질2') {
+        } else if (tag === 'C002D958') {
             bottomBlockImage.src = 'bottomblock3.png';
             document.getElementById('info-text').innerText = '아보카도'; // 변경된 텍스트
-        } else if (tag === '단백질3') {
+        } else if (tag === 'C2765B54') {
             bottomBlockImage.src = 'bottomblock1.png';
             document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
         }
