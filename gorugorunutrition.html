@@ -295,7 +295,7 @@
 </div>
 
 <script>
-    const socket = io.connect('https://nutritionblock.netlify.app'); // 서버 URL 설정
+    const socket = io.connect('https://salty-bayou-45406.herokuapp.com'); // Heroku의 서버 URL로 변경
     const bottomBlockImage = document.getElementById("image-block").querySelector("img"); // 이미지 가져오기
 
     socket.on('rfid', function(tag) {
