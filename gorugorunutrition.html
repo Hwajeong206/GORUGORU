@@ -310,6 +310,11 @@
             document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
         }
     });
+
+    app.use(cors({
+  origin: 'https://nutritionblock.netlify.app'
+}));
+
 </script>
 
 </body>
