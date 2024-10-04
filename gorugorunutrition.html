@@ -269,46 +269,53 @@
             <!-- 영양소 up/down -->
             <div class="carbon" id="carbon">
                 <img src="carbon.svg" alt="탄수화물"/>
-                <span>-1</span>
+                <span>탄수화물</span>
             </div>
-
             <div class="protein" id="protein">
                 <img src="protein.svg" alt="단백질"/>
-                <span>+1</span>
+                <span>단백질</span>
             </div>
         </div>
 
+        <!-- 이미지 섹션 -->
         <div class="horizontal-layout-images">
-            <!-- 아보카드 이미지 -->
+            <!-- 아보카도 -->
             <div class="avocado">
-                <img src="avocado.png" alt="아보카도" />
+                <img src="avocado.png" alt="아보카도">
             </div>
-
-            <!-- 버터 이미지 -->
+            <!-- 버터 -->
             <div class="butter">
-                <img src="butter.png" alt="버터" />
+                <img src="butter.png" alt="버터">
             </div>
         </div>
 
         <div class="nutritionblock">
-            <img id="image-block" src="bottomblock1.png" alt="영양소블록"/>
+            <img src="bottomblock1.png" id="bottomblock" alt="하단블록"/>
         </div>
-        
+    </div>
 </div>
 
-<script src="/socket.io/socket.io.js">
-    // 서버와 WebSocket 연결
-    const socket = io('http://localhost:3000');
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
 
-    // 시리얼 데이터 수신
-    socket.on('serialData', (data) => {
-  console.log('Received serial data:', data);
-  // 데이터에 따라 이미지 및 텍스트 변경
-  if (data === '5390718B') {
-    document.getElementById('image-block').src = 'bottomblock2.png';
-    document.getElementById('info-text').innerText = '버터';
-  }
-});
+    socket.on('serial-data', function(data) {
+        console.log('Received serial data:', data);
+        const infoText = document.getElementById('info-text');
+        const bottomBlockImage = document.getElementById('bottomblock');
+
+        if (data === '단백질1') {
+            infoText.innerText = '버터';
+            bottomBlockImage.src = 'bottomblock2.png';
+        } else if (data === '단백질2') {
+            infoText.innerText = '탄수화물';
+            bottomBlockImage.src = 'bottomblock3.png';
+        } else if (data === '단백질3') {
+            infoText.innerText = '단백질';
+            bottomBlockImage.src = 'bottomblock4.png';
+        }
+    });
 </script>
+
 </body>
 </html>
