@@ -74,7 +74,7 @@
       width: 100%;
       max-width: 800px; /* 초기 크기 */
       height: auto;
-      margin-top: -150px;
+      margin-top: -130px;
       animation: float 3s ease-in-out infinite;
       transition: max-width 1s;
     }
@@ -120,7 +120,10 @@
       opacity: 0; /* 처음엔 투명하게 */
       width: 126px; /* 기본 크기 설정 */
       transition: opacity 1s ease;
+      justify-content: center; /* 가운데 정렬 */
+      align-items: center; /* 세로 가운데 정렬 */
     }
+
     .touch-icon.visible {
       opacity: 1;
       animation: fadeInOut 2s ease-in-out infinite;
@@ -135,7 +138,8 @@
       font-size: 33px;
       line-height: 140%;
       letter-spacing: -2px;
-      left: 900px;
+      top:700px;
+      margin-left: 11px;
     }
 
     /* 하단 뱃지와 보너스 섹션 */
