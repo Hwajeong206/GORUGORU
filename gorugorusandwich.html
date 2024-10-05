@@ -464,7 +464,7 @@
 @keyframes moveLeft {
   to {
     top: 250px;
-    left: 50px; /* 300px 더 왼쪽으로 이동 */
+    left: 80px; /* 300px 더 왼쪽으로 이동 */
     transform: none; /* 위치 고정 */
   }
 }
@@ -568,7 +568,7 @@ document.getElementById('clickable-area').addEventListener('click', (event) => {
   // 이동이 끝나면 둥둥 떠다니는 애니메이션 시작
 // 이동이 끝나면 둥둥 떠다니는 애니메이션 시작
 studySandwich.addEventListener('animationend', () => {
-  studySandwich.style.left = '50px'; // 이동한 후 왼쪽 고정 (300px 더 왼쪽)
+  studySandwich.style.left = '80px'; // 이동한 후 왼쪽 고정 (300px 더 왼쪽)
   studySandwich.style.transform = 'translateY(-50%)'; // 수직 중앙에 고정
   studySandwich.style.animation = 'float 3s ease-in-out infinite'; // 둥둥 떠다니는 애니메이션 재적용
 });
