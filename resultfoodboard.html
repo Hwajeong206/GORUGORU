@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>음식보드 결과화면</title>
+    
+    <style>
+        @font-face {
+            font-family: 'Happiness-Sans-Title';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/Happiness-Sans-Title.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Happiness-Sans-Title', sans-serif;
+            background-color: #00BC85;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: space-between;
+            overflow: hidden; /* 스크롤 차단 */
+        }
+
+        .container{
+            position: relative;
+            width: 100%;
+            height: 100%; /* 화면 전체 높이 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 상단 메뉴 버튼 */
+        .menu-btn {
+            position: absolute;
+            top: 45px;
+            left: 60px;
+            width: 94.5px;
+            height: 84px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+   
+
+        /* 텍스트와 올리브 이미지 섹션 */
+        .content {
+            text-align: center;
+            margin-top: 0px;
+        }
+
+        .content p {
+            color: #ffffff;
+            font-size: 70px;
+            font-family: "Happiness-Sans-Title";
+            line-height: 143%;
+            letter-spacing: -3.36px;
+            transition: font-size 1s, opacity 1s;
+            margin-top: -110px;
+        }
+
+        /*음식보드 */
+        .score img {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 450px;
+            top: 480px;
+            align-items: center;
+            height: auto;
+        }
+
+        /* 블러 처리된 원 */
+        .background-blur {
+            position: absolute;
+            top: 30%;
+            left: 30%;
+            width: 1200px;  /* 원 크기 */
+            height: 1200px;
+            background: linear-gradient(165deg, #1E502C 20.88%, rgba(30, 80, 44, 0.30) 82.59%);
+            border-radius: 50%;
+            filter: blur(100px);  /* 블러 처리 */
+            transform: translate(-50%, -50%);
+            z-index: -1;  /* 다른 요소보다 뒤에 배치 */
+        }
+
+
+  /* 선 애니메이션 설정 */
+  #line1, #line2, #line3, #line4 {
+    stroke-dasharray: 432;  /* 선 길이에 맞게 조정 */
+    stroke-dashoffset: 432;
+    animation: draw-line 1.5s ease forwards;
+    stroke-linecap: round;
+    opacity: 1;
+    z-index: auto;
+  }
+
+  /* 선이 그려지는 애니메이션 */
+  @keyframes draw-line {
+    to {
+      stroke-dashoffset: 0;
+    }
+
+  }
+       /* 선 끝이 흐려지도록 페이드 효과 */
+       @keyframes fade-end {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+
+
+        /* 아이패드 12.9인치 최적화를 위한 미디어 쿼리 */
+        @media (max-height: 1024px) {
+            .content p { font-size: 56px; }
+            .score img { max-width: 450px; }
+            .avocado img { max-width: 300px; }
+            .butter img { max-width: 400px; }
+            .info { font-size: 32px; margin-top: 20px; margin-bottom: 190px; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 메뉴 버튼 -->
+    <div class="menu-btn">
+        <img src="menu3.svg" alt="menu" />
+    </div>
+
+    <!-- 블러 처리된 원 -->
+    <div class="background-blur"></div>
+
+    <!-- 타이틀 -->
+    <div class="content">
+        <p class="title">식단이 골고루 구성되어 있어요!</p>
+        </div>
+
+        <!-- 아이템 컨테이너 -->
+        <div class="score" id="score">
+            <img src="90score.png" alt="점수판" />
+        </div>
+
+        
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0;">
+            <!-- 1번 선 -->
+            <circle cx="821" cy="432" r="10" fill="#FFF" /> <!-- 시작점의 동그란 원 -->
+            <line id="line1" x1="821" y1="432" x2="1000" y2="432" stroke="url(#lineGradient)" stroke-width="3px"/>
+        
+            <!-- 2번 선 -->
+            <circle cx="885" cy="594" r="10" fill="#FFF" /> <!-- 시작점의 동그란 원 -->
+            <line id="line2" x1="885" y1="594" x2="1100" y2="594" stroke="url(#lineGradient)" stroke-width="3px"/>
+        
+            <!-- 3번 선 -->
+            <circle cx="781" cy="769" r="10" fill="#FFF" /> <!-- 시작점의 동그란 원 -->
+            <line id="line3" x1="781" y1="769" x2="980" y2="769" stroke="url(#lineGradient)" stroke-width="3px"/>
+        
+            <!-- 4번 선 -->
+            <circle cx="455" cy="597" r="10" fill="#FFF" /> <!-- 시작점의 동그란 원 -->
+            <line id="line4" x1="455" y1="597" x2="650" y2="597" stroke="url(#lineGradient)" stroke-width="3px"/>
+        
+         <!-- 선의 그라데이션 정의 -->
+         <defs>
+            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#FFF; stop-opacity:1" />
+                <stop offset="80%" style="stop-color:#FFF; stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#FFF; stop-opacity:0" />
+            </linearGradient>
+        </defs>
+        </svg>
+
+
+    </div>
+        
+          
+</body>
+</html>
