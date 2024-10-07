@@ -1,47 +1,34 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const SerialPort = require('serialport'); // serialport 모듈 추가
-const Readline = require('@serialport/parser-readline');
-const cors = require('cors'); // cors 패키지 추가
+const cors = require('cors');
 
-// 서버 설정
 const app = express();
-app.use(cors()); // 모든 도메인에서 접근 허용
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "https://nutritionblock.netlify.app", // Netlify URL 허용
+    methods: ["GET", "POST"]
+  }
+});
 
-// 포트 설정
-const PORT = process.env.PORT || 3000;
-
-// 시리얼 포트 설정
-const portName = '/dev/tty.wchusbserial210'; // 사용자 시리얼 포트 이름
-const port = new SerialPort({ path: portName, baudRate: 9600 });
-const parser = port.pipe(new Readline({ delimiter: '\n' }));
-
-// 클라이언트 연결
+// WebSocket에서 RFID UID 수신 및 처리
 io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+  console.log('Client connected:', socket.id);
 
-  // 시리얼 데이터 수신
-  parser.on('data', (data) => {
-    console.log('Serial data received:', data.trim());
-    socket.emit('serial-data', data.trim()); // 클라이언트에 데이터 전송
-  });
-
-  // 메시지를 받았을 때
-  socket.on('message', (msg) => {
-    console.log('Message received:', msg);
-    socket.broadcast.emit('message', msg); // 다른 클라이언트에 메시지 전달
-  });
-
-  // 연결이 끊겼을 때
   socket.on('disconnect', () => {
-    console.log('A user disconnected:', socket.id);
+    console.log('Client disconnected:', socket.id);
+  });
+
+  // Arduino(ESP32)로부터 RFID UID 수신
+  socket.on('rfid', (uid) => {
+    console.log('RFID UID received:', uid);
+    // 클라이언트로 UID 전송
+    io.emit('rfid', uid);
   });
 });
 
-// 서버 시작
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
