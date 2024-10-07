@@ -295,10 +295,17 @@
 </div>
 
 <script>
-   const socket = io.connect('아두이노 내부 IP 주소를 넣기');
+    const socket = new WebSocket("ws://172.20.10.4:81");
     const bottomBlockImage = document.getElementById("image-block").querySelector("img"); // 이미지 가져오기
-
-    socket.on('rfid', function(tag) {
+ 
+    socket.onopen = function() {
+        console.log("웹소켓 연결 완료");
+    };
+ 
+    socket.onmessage = function(event) {
+        const tag = event.data; // 서버에서 받은 메시지
+        console.log("받은 RFID 태그:", tag);
+ 
         if (tag === '5390718B') {
             bottomBlockImage.src = 'bottomblock2.png';
             document.getElementById('info-text').innerText = '버터'; // 변경된 텍스트
@@ -309,9 +316,15 @@
             bottomBlockImage.src = 'bottomblock1.png';
             document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
         }
-    });
-
-</script>
-
+    };
+ 
+    socket.onclose = function() {
+        console.log("웹소켓 연결 종료");
+    };
+ 
+    socket.onerror = function(error) {
+        console.error("웹소켓 에러:", error);
+    };
+ </script>
 </body>
 </html>
