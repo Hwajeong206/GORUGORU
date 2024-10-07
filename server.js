@@ -35,23 +35,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// 클라이언트에서 RFID UID를 수신하고 화면 업데이트 (클라이언트 측 코드)
-// 클라이언트 코드 (예: index.html 또는 관련 JS 파일에서 실행)
-socket.on('rfid', function(tag) {
-    const bottomBlockImage = document.getElementById('bottom-block-image'); // bottom-block-image는 이미지 요소의 ID입니다.
-    
-    if (tag === '5390718B') {
-        bottomBlockImage.src = 'bottomblock2.png';
-        document.getElementById('info-text').innerText = '버터'; // 변경된 텍스트
-    } else if (tag === 'C002D958') {
-        bottomBlockImage.src = 'bottomblock3.png';
-        document.getElementById('info-text').innerText = '아보카도'; // 변경된 텍스트
-    } else if (tag === 'C2765B54') {
-        bottomBlockImage.src = 'bottomblock1.png';
-        document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
-    }
-});
-
 // 포트 설정 및 서버 시작
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
