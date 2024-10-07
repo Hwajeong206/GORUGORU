@@ -1,9 +1,3 @@
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://nutritionblock.netlify.app"); // 요청을 허용할 도메인
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -17,6 +11,13 @@ const io = socketIo(server, {
     methods: ["GET", "POST"]
   }
 });
+
+// CORS 미들웨어 설정
+app.use(cors({
+  origin: "https://nutritionblock.netlify.app", // 요청을 허용할 도메인
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept"]
+}));
 
 // WebSocket에서 RFID UID 수신 및 처리
 io.on('connection', (socket) => {
@@ -34,12 +35,8 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-// 클라이언트에서 RFID UID를 수신하고 화면 업데이트
+// 클라이언트에서 RFID UID를 수신하고 화면 업데이트 (클라이언트 측 코드)
+// 클라이언트 코드 (예: index.html 또는 관련 JS 파일에서 실행)
 socket.on('rfid', function(tag) {
     const bottomBlockImage = document.getElementById('bottom-block-image'); // bottom-block-image는 이미지 요소의 ID입니다.
     
@@ -53,4 +50,10 @@ socket.on('rfid', function(tag) {
         bottomBlockImage.src = 'bottomblock1.png';
         document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
     }
+});
+
+// 포트 설정 및 서버 시작
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
