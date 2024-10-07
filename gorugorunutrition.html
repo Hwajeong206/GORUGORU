@@ -295,7 +295,7 @@
 </div>
 
 <script>
-   const socket = io.connect('https://goru-goru.herokuapp.com/');
+   const socket = io.connect('아두이노 내부 IP 주소를 넣기');
     const bottomBlockImage = document.getElementById("image-block").querySelector("img"); // 이미지 가져오기
 
     socket.on('rfid', function(tag) {
