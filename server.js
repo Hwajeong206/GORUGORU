@@ -1,3 +1,9 @@
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://nutritionblock.netlify.app"); // 요청을 허용할 도메인
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
