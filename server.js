@@ -48,4 +48,3 @@ socket.on('rfid', function(tag) {
         document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
     }
 });
-
