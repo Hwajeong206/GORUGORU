@@ -240,6 +240,23 @@
             .butter img { max-width: 400px; }
             .info { font-size: 32px; margin-top: 20px; margin-bottom: 190px; }
         }
+
+    /* 기존 CSS 스타일에 추가 */
+    #serialButton {
+        position: absolute;
+            bottom: 50px; /* 원하는 위치 조정 */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100px; /* 원하는 높이 조정 */
+            background: rgba(255, 255, 255, 0.5); /* 반투명 배경 */
+            border: none;
+            cursor: pointer;
+            z-index: 2; /* 다른 요소 위에 보이도록 */
+            display: none;
+    }
+
+
     </style>
 </head>
 <body>
@@ -291,6 +308,9 @@
         </div>
 
         <div id="image-block" class="nutritionblock"><img src="bottomblock1.png" alt="영양소 블록 이미지" /></div>
+
+        <!-- 버튼 추가 -->
+<button id="serialButton">연결하기</button>
 </div>
 
 <script>
