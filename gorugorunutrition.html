@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영양소 블록 화면</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     
     <style>
         @font-face {
@@ -253,7 +254,6 @@
             border: none;
             cursor: pointer;
             z-index: 2; /* 다른 요소 위에 보이도록 */
-            display: none;
     }
 
 
@@ -310,31 +310,41 @@
         <div id="image-block" class="nutritionblock"><img src="bottomblock1.png" alt="영양소 블록 이미지" /></div>
 
         <!-- 버튼 추가 -->
-<button id="serialButton">연결하기</button>
+<button id="serialButton" onclick="handleButtonClick()">연결하기</button>
 </div>
 
 <script>
     let port;
     let reader;
 
-    const connectButton = document.getElementById('connect-button');
+    const connectButton = document.getElementById('serialButton');
     const bottomBlockImage = document.getElementById("image-block").querySelector("img");
     const infoText = document.getElementById('info-text');
 
+    // 페이지 로드 시 버튼을 보여줍니다.
+    window.onload = () => {
+        connectButton.style.display = "block"; // 버튼 보이기
+    };
+
     connectButton.addEventListener('click', async () => {
+        await connectToSerial();
+    });
+
+    async function connectToSerial() {
         try {
             port = await navigator.serial.requestPort(); // 포트 선택
             await port.open({ baudRate: 9600 }); // 시리얼 통신 설정
             reader = port.readable.getReader();
 
             connectButton.innerText = "연결됨";
-            connectButton.disabled = true;
+            connectButton.disabled = true; // 버튼 비활성화
 
             readFromSerial(); // 데이터 읽기 시작
         } catch (error) {
             console.error("시리얼 연결 에러:", error);
+            connectButton.innerText = "연결 실패, 다시 시도";
         }
-    });
+    }
 
     async function readFromSerial() {
         while (port.readable) {
@@ -365,7 +375,7 @@
         }
         reader.releaseLock();
     }
- </script>
+</script>
 
  
 </body>
