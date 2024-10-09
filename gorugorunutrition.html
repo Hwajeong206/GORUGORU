@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영양소 블록 화면</title>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script> <!-- socket.io 클라이언트 로드 -->
     
     <style>
         @font-face {
@@ -295,36 +294,59 @@
 </div>
 
 <script>
-    const socket = new WebSocket("wss://172.30.1.97:81");
-    const bottomBlockImage = document.getElementById("image-block").querySelector("img"); // 이미지 가져오기
- 
-    socket.onopen = function() {
-        console.log("웹소켓 연결 완료");
-    };
- 
-    socket.onmessage = function(event) {
-        const tag = event.data; // 서버에서 받은 메시지
-        console.log("받은 RFID 태그:", tag);
- 
-        if (tag === '5390718B') {
-            bottomBlockImage.src = 'bottomblock2.png';
-            document.getElementById('info-text').innerText = '버터'; // 변경된 텍스트
-        } else if (tag === 'C002D958') {
-            bottomBlockImage.src = 'bottomblock3.png';
-            document.getElementById('info-text').innerText = '아보카도'; // 변경된 텍스트
-        } else if (tag === 'C2765B54') {
-            bottomBlockImage.src = 'bottomblock1.png';
-            document.getElementById('info-text').innerText = '올리브유'; // 변경된 텍스트
+    let port;
+    let reader;
+
+    const connectButton = document.getElementById('connect-button');
+    const bottomBlockImage = document.getElementById("image-block").querySelector("img");
+    const infoText = document.getElementById('info-text');
+
+    connectButton.addEventListener('click', async () => {
+        try {
+            port = await navigator.serial.requestPort(); // 포트 선택
+            await port.open({ baudRate: 9600 }); // 시리얼 통신 설정
+            reader = port.readable.getReader();
+
+            connectButton.innerText = "연결됨";
+            connectButton.disabled = true;
+
+            readFromSerial(); // 데이터 읽기 시작
+        } catch (error) {
+            console.error("시리얼 연결 에러:", error);
         }
-    };
- 
-    socket.onclose = function() {
-        console.log("웹소켓 연결 종료");
-    };
- 
-    socket.onerror = function(error) {
-        console.error("웹소켓 에러:", error);
-    };
+    });
+
+    async function readFromSerial() {
+        while (port.readable) {
+            try {
+                const { value, done } = await reader.read();
+                if (done) {
+                    console.log("리더 종료");
+                    break;
+                }
+                const tag = new TextDecoder().decode(value).trim(); // RFID 태그 값 읽기
+                console.log("받은 RFID 태그:", tag);
+
+                // 태그에 따른 이미지 및 텍스트 변경
+                if (tag === '5390718B') {
+                    bottomBlockImage.src = 'bottomblock2.png';
+                    infoText.innerText = '버터';
+                } else if (tag === 'C002D958') {
+                    bottomBlockImage.src = 'bottomblock3.png';
+                    infoText.innerText = '아보카도';
+                } else if (tag === 'C2765B54') {
+                    bottomBlockImage.src = 'bottomblock1.png';
+                    infoText.innerText = '올리브유';
+                }
+            } catch (error) {
+                console.error("시리얼 읽기 에러:", error);
+                break;
+            }
+        }
+        reader.releaseLock();
+    }
  </script>
+
+ 
 </body>
 </html>
