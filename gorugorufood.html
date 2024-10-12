@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>음식보드 화면</title>
+    <title>음식 보드</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     
     <style>
         @font-face {
@@ -13,7 +14,7 @@
             font-style: normal;
             font-display: swap;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
@@ -30,20 +31,18 @@
             flex-direction: column;
             text-align: center;
             justify-content: space-between;
-            overflow: hidden; /* 스크롤 차단 */
+            overflow: hidden;
         }
 
         .container{
-            position: relative;
             width: 100%;
-            height: 100%; /* 화면 전체 높이 */
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        /* 상단 메뉴 버튼 */
         .menu-btn {
             position: absolute;
             top: 45px;
@@ -56,12 +55,9 @@
             justify-content: center;
             align-items: center;
         }
-   
 
-        /* 텍스트와 올리브 이미지 섹션 */
         .content {
             text-align: center;
-            margin-top: 0px;
         }
 
         .content p {
@@ -71,32 +67,31 @@
             line-height: 143%;
             letter-spacing: -3.36px;
             transition: font-size 1s, opacity 1s;
-            margin-top: -130px;
         }
 
-        /*음식보드 */
-        .foodboard img {
-            margin-top: -30px;
+        .foodboard {
+            position: relative;
+            margin-top: 0px;
             width: 100%;
             max-width: 1050px;
             height: auto;
+            display: flex;
+            justify-content: center;
         }
 
-        /* 블러 처리된 원 */
         .background-blur {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 1200px;  /* 원 크기 */
+            width: 1200px;
             height: 1200px;
             background-color: #ffdb26dd;
             border-radius: 50%;
-            filter: blur(100px);  /* 블러 처리 */
+            filter: blur(100px);
             transform: translate(-50%, -50%);
-            z-index: -1;  /* 다른 요소보다 뒤에 배치 */
+            z-index: -1;
         }
 
-   
         .submit-btn {
             border-radius: 68.2px;
             border: 1.218px solid #FFF;
@@ -105,73 +100,251 @@
             color: #B98500;
             text-align: center;
             font-family: 'Happiness-Sans-Title';
-            font-size: 28.741px;
-            font-style: normal;
-            line-height: 143%; /* 41.1px */
-            opacity: 0.4; 
-            width: 270px;
-            height:70px;
+            font-size: 32px;
+            opacity: 0.4;
+            width: 320px;
+            height:90px;
             letter-spacing: -1px;
-        }
-        
-        .submit-btn:hover {
-            border-radius: 68.2px;
-            border: 1.218px solid #FFF;
-            background: linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0.00) 100%);
-            box-shadow: 4.871px 4.871px 48.714px 0px rgba(255, 184, 0, 0.50);
-            color: #B98500;
-            text-align: center;
-            font-family: 'Happiness-Sans-Title';
-            font-size: 28.741px;
-            font-style: normal;
-            line-height: 143%; /* 41.1px */
-            width: 270px;
-            height:70px;
-            letter-spacing: -1px;
+            pointer-events: none; /* 기본적으로 버튼은 클릭 불가능 */
         }
 
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-30px);
-            }
+        .food1 img {
+            position: absolute;
+            top: 128px;
+            left: 507px;
+            width: 226px;
+            height: 226px;
+            border-radius: 34px;
+            
         }
 
-        /* 아이패드 12.9인치 최적화를 위한 미디어 쿼리 */
-        @media (max-height: 1024px) {
+        .food2 img {
+            position: absolute;
+            top: 393px;
+            left: 381px;
+            width: 226px;
+            height: 226px;
+            border-radius: 34px;
+          
+        }
+
+        .food1 img, .food2 img {
+    visibility: visible !important;
+    display: block !important;
+}
+
+
+
+        @media (max-height: 1920px) {
             .content p { font-size: 56px; }
-            .foodboard img { max-width: 1050px; }
-            .avocado img { max-width: 300px; }
-            .butter img { max-width: 400px; }
-            .info { font-size: 32px; margin-top: 20px; margin-bottom: 190px; }
+            .foodboard img { max-width: 1400px; }
+            .food1 img { max-width: 226px; } 
+            .food2 img { max-width: 226px; } 
         }
+
+
+        #serialButton {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100px;
+            border: none;
+            cursor: pointer;
+            z-index: 2;
+            opacity: 0;
+        }
+
+        .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 검은색으로 dim 처리 */
+    display: none; /* 기본적으로 숨김 */
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* 다른 요소 위에 표시 */
+}
+
+.loading-gif {
+    max-width: 300px; /* GIF 크기 조정 */
+    display: none; /* 기본적으로 숨김 */
+}
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- 메뉴 버튼 -->
     <div class="menu-btn">
         <img src="menu2.svg" alt="menu" />
     </div>
 
-    <!-- 블러 처리된 원 -->
     <div class="background-blur"></div>
 
-    <!-- 타이틀 -->
     <div class="content">
         <p class="title">먹고 싶은 음식을 올려 놓아보세요!</p>
+    </div>
+
+    <div class="foodboard" id="foodboard">
+        <img src="foodboard.png" alt="식판보드" />
+
+        <div id="food1" class="food1">
+            <img src="blank.png"/>
         </div>
 
-        <!-- 아이템 컨테이너 -->
-        <div class="foodboard" id="foodboard">
-            <img src="foodboard.png" alt="식판보드" />
+        <div id="food2" class="food2">
+            <img src="blank.png"/>
         </div>
+    </div>    
 
-        <button class="submit-btn">다 올려놨어요!</button>
+    <button class="submit-btn" id="submitButton">다 올려놨어요!</button>
+    <button id="serialButton">연결하기</button>
+
+    <div class="overlay" id="overlay">
+        <img src="loadingloop.gif" alt="Loading" class="loading-gif" id="loadingGif" />
+    </div>
+    
+</div>
+
+<script>
+let port;
+let reader;
+let currentTag = null; // 현재 태그를 저장할 변수
+let lastTag = null; // 마지막에 읽힌 태그를 저장하는 변수
+let food1Visible = false; // food1 이미지가 보이는지 상태
+let food2Visible = false; // food2 이미지가 보이는지 상태
+const connectButton = document.getElementById('serialButton');
+const food1 = document.getElementById("food1");
+const food1Image = food1.querySelector("img");
+const food2 = document.getElementById("food2");
+const food2Image = food2.querySelector("img");
+const submitButton = document.getElementById("submitButton");
+
+    window.onload = () => {
+        connectButton.style.display = "block"; // 연결 버튼 보이기
+    };
+
+    connectButton.addEventListener('click', async () => {
+        await connectToSerial();
+    });
+
+    async function connectToSerial() {
+        try {
+            port = await navigator.serial.requestPort(); // 포트 선택
+            await port.open({ baudRate: 9600 }); // 시리얼 통신 설정
+
+            const reader = port.readable.getReader();
+            readFromSerial(reader); // 리더에서 데이터 읽기
+
+            connectButton.innerText = "연결됨";
+            connectButton.disabled = true; // 버튼 비활성화
+
+        } catch (error) {
+            console.error("시리얼 연결 에러:", error);
+            connectButton.innerText = "연결 실패, 다시 시도";
+        }
+    }
+
+    async function readFromSerial(reader) {
+    while (port.readable) {
+        try {
+            const { value, done } = await reader.read();
+            if (done) {
+                console.log("리더 종료");
+                break;
+            }
+            const tagData = new TextDecoder().decode(value).trim(); // 시리얼에서 수신한 데이터
+            console.log("", tagData); // 수신된 데이터 로그 추가
+
+            // data.split(":")로 나누기
+            const parts = tagData.split(":");
+            const tagUID = parts.length > 1 ? parts[1] : parts[0]; // UID 추출
+            console.log("추출된 UID:", tagUID); // UID 출력 추가
+
+            if (tagData.startsWith("food1:")) {
+                updateFood1Image(tagUID); // food1 업데이트
+                } else if (tagData.startsWith("food2:")) {
+                    updateFood2Image(tagUID); // food2 업데이트
+                    }
+
+        } catch (error) {
+            console.error("데이터 읽기 에러:", error); // 에러 핸들링
+            alert("데이터 읽기 중 오류가 발생했습니다."); // 사용자에게 알림
+            break;
+        }
+    }
+}
+// food1 이미지 업데이트 함수
+function updateFood1Image(tagUID) {
+    if (tagUID === '02DBB71B') {
+        food1Image.src = 'riceblock.png';
+        food1Image.style.visibility = 'visible';
+        food1Visible = true; // food1 이미지 보임
+    } else if (tagUID === '71FFF727') {
+        food1Image.src = 'appleblock.png';
+        food1Image.style.visibility = 'visible';
+        food1Visible = true; // food1 이미지 보임
+    } else if (tagUID === '1298811B') {
+        food1Image.src = 'friedpotatoblock.png';
+        food1Image.style.visibility = 'visible';
+        food1Visible = true; // food1 이미지 보임
+    } else if (tagUID === '0287AC1B') {
+        food1Image.src = 'milkblock.png';
+        food1Image.style.visibility = 'visible';
+        food1Visible = true; // food1 이미지 보임
+    }
+    updateSubmitButtonState(); // 버튼 상태 업데이트
+}
+
+// food2 이미지 업데이트 함수
+function updateFood2Image(tagUID) {
+    if (tagUID === '02DBB72B') {
+        food2Image.src = 'riceblock.png';
+        food2Image.style.visibility = 'visible';
+        food2Visible = true; // food2 이미지 보임
+    } else if (tagUID === '71FFF728') {
+        food2Image.src = 'appleblock.png';
+        food2Image.style.visibility = 'visible';
+        food2Visible = true; // food2 이미지 보임
+    } else if (tagUID === '1298812B') {
+        food2Image.src = 'friedpotatoblock.png';
+        food2Image.style.visibility = 'visible';
+        food2Visible = true; // food2 이미지 보임
+    } else if (tagUID === '0287AC2B') {
+        food2Image.src = 'milkblock.png';
+        food2Image.style.visibility = 'visible';
+        food2Visible = true; // food2 이미지 보임
+    }
+    updateSubmitButtonState(); // 버튼 상태 업데이트
+}
+
+// 버튼 활성화 상태 업데이트 함수
+function updateSubmitButtonState() {
+    if (food1Visible && food2Visible) {
+        submitButton.style.pointerEvents = 'auto'; // 버튼 활성화
+        submitButton.style.opacity = '1'; // 버튼 보이게
+    } else {
+        submitButton.style.pointerEvents = 'none'; // 버튼 비활성화
+        submitButton.style.opacity = '0.4'; // 버튼 흐리게
+    }
+}
+
+// 버튼 클릭 이벤트 추가
+submitButton.addEventListener('click', () => {
+    const overlay = document.getElementById('overlay');
+    const loadingGif = document.getElementById('loadingGif');
+
+    overlay.style.display = 'flex'; // dim 오버레이 보이기
+    loadingGif.style.display = 'block'; // GIF 보이기
+});
+
+
+
+</script>
 
 </body>
 </html>
