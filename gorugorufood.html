@@ -267,6 +267,11 @@ const submitButton = document.getElementById("submitButton");
 // food1 이미지 업데이트 함수
 function updateFood1Image(tagUID) {
     console.log("food1 태그 인식:", tagUID); // 태그 인식 로그
+    if (food2Image.src.includes(tagUID)) {
+        console.log("이미 food2에 사용된 태그입니다.");
+        return; // food2에 동일한 태그가 있으면 업데이트 중단
+    }
+
     if (tagUID === '02DBB71B') {
         food1Image.src = 'riceblock.png';
     } else if (tagUID === '71FFF727') {
@@ -276,8 +281,7 @@ function updateFood1Image(tagUID) {
     } else if (tagUID === '0287AC1B') {
         food1Image.src = 'milkblock.png';
     }
-    
-    // food1 이미지를 보이게 설정
+
     food1Image.style.display = 'block'; // 항상 보이게 설정
     food1Visible = true; // food1 이미지 보임
     updateSubmitButtonState(); // 버튼 상태 업데이트
@@ -286,6 +290,11 @@ function updateFood1Image(tagUID) {
 // food2 이미지 업데이트 함수
 function updateFood2Image(tagUID) {
     console.log("food2 태그 인식:", tagUID); // 태그 인식 로그
+    if (food1Image.src.includes(tagUID)) {
+        console.log("이미 food1에 사용된 태그입니다.");
+        return; // food1에 동일한 태그가 있으면 업데이트 중단
+    }
+
     if (tagUID === '02DBB72B') {
         food2Image.src = 'riceblock.png';
     } else if (tagUID === '71FFF728') {
@@ -295,12 +304,11 @@ function updateFood2Image(tagUID) {
     } else if (tagUID === '0287AC2B') {
         food2Image.src = 'milkblock.png';
     }
-    // food2 이미지를 보이게 설정
+
     food2Image.style.display = 'block'; // 항상 보이게 설정
     food2Visible = true; // food2 이미지 보임
     updateSubmitButtonState(); // 버튼 상태 업데이트
 }
-
 // 버튼 활성화 상태 업데이트 함수
 function updateSubmitButtonState() {
     if (food1Visible && food2Visible) {
