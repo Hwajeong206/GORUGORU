@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -202,11 +200,11 @@ let port;
 let reader;
 let currentTag = null; // 현재 태그를 저장할 변수
 let lastTag = null; // 마지막에 읽힌 태그를 저장하는 변수
-
+let food1Visible = false; // food1 이미지가 보이는지 상태
 let food2Visible = false; // food2 이미지가 보이는지 상태
 const connectButton = document.getElementById('serialButton');
-
-
+const food1 = document.getElementById("food1");
+const food1Image = food1.querySelector("img");
 const food2 = document.getElementById("food2");
 const food2Image = food2.querySelector("img");
 const submitButton = document.getElementById("submitButton");
@@ -266,6 +264,20 @@ const submitButton = document.getElementById("submitButton");
     }
 }
 
+// food1 이미지 업데이트 함수
+function updateFood1Image(tagUID) {
+    console.log("food1 태그 인식:", tagUID); // 태그 인식 로그
+    if (tagUID === '02DBB71B') {
+        food1Image.src = 'riceblock.png';
+    } else if (tagUID === '71FFF727') {
+        food1Image.src = 'appleblock.png';
+    } else if (tagUID === '1298811B') {
+        food1Image.src = 'friedpotatoblock.png';
+    } else if (tagUID === '0287AC1B') {
+        food1Image.src = 'milkblock.png';
+    }
+    
+    // food1 이미지를 보이게 설정
     food1Image.style.display = 'block'; // 항상 보이게 설정
     food1Visible = true; // food1 이미지 보임
     updateSubmitButtonState(); // 버튼 상태 업데이트
@@ -274,11 +286,6 @@ const submitButton = document.getElementById("submitButton");
 // food2 이미지 업데이트 함수
 function updateFood2Image(tagUID) {
     console.log("food2 태그 인식:", tagUID); // 태그 인식 로그
-    if (food1Image.src.includes(tagUID)) {
-        console.log("이미 food1에 사용된 태그입니다.");
-        return; // food1에 동일한 태그가 있으면 업데이트 중단
-    }
-
     if (tagUID === '02DBB72B') {
         food2Image.src = 'riceblock.png';
     } else if (tagUID === '71FFF728') {
@@ -288,14 +295,15 @@ function updateFood2Image(tagUID) {
     } else if (tagUID === '0287AC2B') {
         food2Image.src = 'milkblock.png';
     }
-
+    // food2 이미지를 보이게 설정
     food2Image.style.display = 'block'; // 항상 보이게 설정
     food2Visible = true; // food2 이미지 보임
     updateSubmitButtonState(); // 버튼 상태 업데이트
 }
+
 // 버튼 활성화 상태 업데이트 함수
 function updateSubmitButtonState() {
-    if (food2Visible) {
+    if (food1Visible && food2Visible) {
         submitButton.style.pointerEvents = 'auto'; // 버튼 활성화
         submitButton.style.opacity = '1'; // 버튼 보이게
     } else {
