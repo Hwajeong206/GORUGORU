@@ -43,18 +43,6 @@
             align-items: center;
         }
 
-        .menu-btn {
-            position: absolute;
-            top: 45px;
-            left: 60px;
-            width: 94.5px;
-            height: 84px;
-            background-color: white;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
         .content {
             text-align: center;
@@ -128,7 +116,7 @@
           
         }
 
-        .food1 img, .food2 img {
+    .food1 img, .food2 img {
     visibility: visible !important;
     display: block !important;
 }
@@ -136,7 +124,7 @@
 
 
         @media (max-height: 1920px) {
-            .content p { font-size: 56px; }
+            .content p { font-size: 60px; }
             .foodboard img { max-width: 1400px; }
             .food1 img { max-width: 226px; } 
             .food2 img { max-width: 226px; } 
@@ -179,10 +167,6 @@
 <body>
 
 <div class="container">
-    <div class="menu-btn">
-        <img src="menu2.svg" alt="menu" />
-    </div>
-
     <div class="background-blur"></div>
 
     <div class="content">
@@ -258,7 +242,7 @@ const submitButton = document.getElementById("submitButton");
                 break;
             }
             const tagData = new TextDecoder().decode(value).trim(); // 시리얼에서 수신한 데이터
-            console.log("", tagData); // 수신된 데이터 로그 추가
+            console.log("수신된 데이터:", tagData); // 수신된 데이터 로그 추가
 
             // data.split(":")로 나누기
             const parts = tagData.split(":");
@@ -267,9 +251,9 @@ const submitButton = document.getElementById("submitButton");
 
             if (tagData.startsWith("food1:")) {
                 updateFood1Image(tagUID); // food1 업데이트
-                } else if (tagData.startsWith("food2:")) {
-                    updateFood2Image(tagUID); // food2 업데이트
-                    }
+            } else if (tagData.startsWith("food2:")) {
+                updateFood2Image(tagUID); // food2 업데이트
+            }
 
         } catch (error) {
             console.error("데이터 읽기 에러:", error); // 에러 핸들링
@@ -278,47 +262,41 @@ const submitButton = document.getElementById("submitButton");
         }
     }
 }
+
 // food1 이미지 업데이트 함수
 function updateFood1Image(tagUID) {
+    console.log("food1 태그 인식:", tagUID); // 태그 인식 로그
     if (tagUID === '02DBB71B') {
         food1Image.src = 'riceblock.png';
-        food1Image.style.visibility = 'visible';
-        food1Visible = true; // food1 이미지 보임
     } else if (tagUID === '71FFF727') {
         food1Image.src = 'appleblock.png';
-        food1Image.style.visibility = 'visible';
-        food1Visible = true; // food1 이미지 보임
     } else if (tagUID === '1298811B') {
         food1Image.src = 'friedpotatoblock.png';
-        food1Image.style.visibility = 'visible';
-        food1Visible = true; // food1 이미지 보임
     } else if (tagUID === '0287AC1B') {
         food1Image.src = 'milkblock.png';
-        food1Image.style.visibility = 'visible';
-        food1Visible = true; // food1 이미지 보임
     }
+    
+    // food1 이미지를 보이게 설정
+    food1Image.style.display = 'block'; // 항상 보이게 설정
+    food1Visible = true; // food1 이미지 보임
     updateSubmitButtonState(); // 버튼 상태 업데이트
 }
 
 // food2 이미지 업데이트 함수
 function updateFood2Image(tagUID) {
+    console.log("food2 태그 인식:", tagUID); // 태그 인식 로그
     if (tagUID === '02DBB72B') {
         food2Image.src = 'riceblock.png';
-        food2Image.style.visibility = 'visible';
-        food2Visible = true; // food2 이미지 보임
     } else if (tagUID === '71FFF728') {
         food2Image.src = 'appleblock.png';
-        food2Image.style.visibility = 'visible';
-        food2Visible = true; // food2 이미지 보임
     } else if (tagUID === '1298812B') {
         food2Image.src = 'friedpotatoblock.png';
-        food2Image.style.visibility = 'visible';
-        food2Visible = true; // food2 이미지 보임
     } else if (tagUID === '0287AC2B') {
         food2Image.src = 'milkblock.png';
-        food2Image.style.visibility = 'visible';
-        food2Visible = true; // food2 이미지 보임
     }
+    // food2 이미지를 보이게 설정
+    food2Image.style.display = 'block'; // 항상 보이게 설정
+    food2Visible = true; // food2 이미지 보임
     updateSubmitButtonState(); // 버튼 상태 업데이트
 }
 
@@ -341,10 +319,6 @@ submitButton.addEventListener('click', () => {
     overlay.style.display = 'flex'; // dim 오버레이 보이기
     loadingGif.style.display = 'block'; // GIF 보이기
 });
-
-
-
 </script>
-
 </body>
 </html>
