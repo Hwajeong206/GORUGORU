@@ -55,6 +55,7 @@
             line-height: 143%;
             letter-spacing: -3.36px;
             transition: font-size 1s, opacity 1s;
+            margin-top: 10px;
         }
 
         .foodboard {
@@ -251,7 +252,7 @@ const submitButton = document.getElementById("submitButton");
 
             if (tagData.startsWith("food1:")) {
                 updateFood1Image(tagUID); // food1 업데이트
-            } if (tagData.startsWith("food2:")) {
+            } else if (tagData.startsWith("food2:")) {
                 updateFood2Image(tagUID); // food2 업데이트
             }
 
