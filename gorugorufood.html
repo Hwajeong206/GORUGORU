@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -43,6 +45,18 @@
             align-items: center;
         }
 
+        .menu-btn {
+            position: absolute;
+            top: 45px;
+            left: 60px;
+            width: 94.5px;
+            height: 84px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         .content {
             text-align: center;
@@ -55,7 +69,6 @@
             line-height: 143%;
             letter-spacing: -3.36px;
             transition: font-size 1s, opacity 1s;
-            margin-top: 10px;
         }
 
         .foodboard {
@@ -117,10 +130,15 @@
           
         }
 
+        .food1 img, .food2 img {
+    visibility: visible !important;
+    display: block !important;
+}
+
 
 
         @media (max-height: 1920px) {
-            .content p { font-size: 60px; }
+            .content p { font-size: 56px; }
             .foodboard img { max-width: 1400px; }
             .food1 img { max-width: 226px; } 
             .food2 img { max-width: 226px; } 
@@ -150,6 +168,7 @@
     display: none; /* 기본적으로 숨김 */
     justify-content: center;
     align-items: center;
+    flex-direction: column; /* 수직으로 정렬 */
     z-index: 10; /* 다른 요소 위에 표시 */
 }
 
@@ -158,11 +177,21 @@
     display: none; /* 기본적으로 숨김 */
 }
 
+.loading-text {
+        color: #FFF; /* 텍스트 색상 */
+        font-size: 50px; /* 텍스트 크기 */
+        margin-top: -20px; /* GIF와 텍스트 간격 */
+        text-align: center; /* 중앙 정렬 */
+    }
     </style>
 </head>
-<body>
 
+<body>
 <div class="container">
+    <div class="menu-btn">
+        <img src="menu2.svg" alt="menu" />
+    </div>
+
     <div class="background-blur"></div>
 
     <div class="content">
@@ -186,6 +215,7 @@
 
     <div class="overlay" id="overlay">
         <img src="loadingloop.gif" alt="Loading" class="loading-gif" id="loadingGif" />
+        <p class="loading-text">음식을 분석 중이에요...</p> <!-- 텍스트 추가 -->
     </div>
     
 </div>
@@ -195,8 +225,6 @@ let port;
 let reader;
 let currentTag = null; // 현재 태그를 저장할 변수
 let lastTag = null; // 마지막에 읽힌 태그를 저장하는 변수
-let food1Visible = false; // food1 이미지가 보이는지 상태
-let food2Visible = false; // food2 이미지가 보이는지 상태
 const connectButton = document.getElementById('serialButton');
 const food1 = document.getElementById("food1");
 const food1Image = food1.querySelector("img");
@@ -213,21 +241,19 @@ const submitButton = document.getElementById("submitButton");
     });
 
     async function connectToSerial() {
-        try {
-            port = await navigator.serial.requestPort(); // 포트 선택
-            await port.open({ baudRate: 9600 }); // 시리얼 통신 설정
-
-            const reader = port.readable.getReader();
-            readFromSerial(reader); // 리더에서 데이터 읽기
-
-            connectButton.innerText = "연결됨";
-            connectButton.disabled = true; // 버튼 비활성화
-
-        } catch (error) {
-            console.error("시리얼 연결 에러:", error);
-            connectButton.innerText = "연결 실패, 다시 시도";
-        }
+    try {
+        port = await navigator.serial.requestPort(); // 포트 선택
+        await port.open({ baudRate: 9600 }); // 시리얼 통신 설정
+        const reader = port.readable.getReader(); // 리더 초기화
+        readFromSerial(reader); // 리더에서 데이터 읽기
+        connectButton.innerText = "연결됨";
+        connectButton.disabled = true; // 버튼 비활성화
+    } catch (error) {
+        console.error("시리얼 연결 에러:", error);
+        connectButton.innerText = "연결 실패, 다시 시도";
     }
+}
+
 
     async function readFromSerial(reader) {
     while (port.readable) {
@@ -238,7 +264,7 @@ const submitButton = document.getElementById("submitButton");
                 break;
             }
             const tagData = new TextDecoder().decode(value).trim(); // 시리얼에서 수신한 데이터
-            console.log("수신된 데이터:", tagData); // 수신된 데이터 로그 추가
+            console.log("", tagData); // 수신된 데이터 로그 추가
 
             // data.split(":")로 나누기
             const parts = tagData.split(":");
@@ -247,9 +273,9 @@ const submitButton = document.getElementById("submitButton");
 
             if (tagData.startsWith("food1:")) {
                 updateFood1Image(tagUID); // food1 업데이트
-            } else if (tagData.startsWith("food2:")) {
-                updateFood2Image(tagUID); // food2 업데이트
-            }
+                } else if (tagData.startsWith("food2:")) {
+                    updateFood2Image(tagUID); // food2 업데이트
+                    }
 
         } catch (error) {
             console.error("데이터 읽기 에러:", error); // 에러 핸들링
@@ -258,63 +284,82 @@ const submitButton = document.getElementById("submitButton");
         }
     }
 }
-
-// food1 이미지 업데이트 함수
 function updateFood1Image(tagUID) {
-    console.log("food1 태그 인식:", tagUID); // 태그 인식 로그
+    console.log("food1 태그 UID:", tagUID); // 태그 UID 확인
+    console.log("food1 이미지:", food1Image.src);
     if (tagUID === '02DBB71B') {
         food1Image.src = 'riceblock.png';
+        console.log("이미지 업데이트: riceblock.png");
+        food1Image.style.visibility = 'visible';
     } else if (tagUID === '71FFF727') {
         food1Image.src = 'appleblock.png';
+        console.log("이미지 업데이트: appleblock.png");
+        food1Image.style.visibility = 'visible';
     } else if (tagUID === '1298811B') {
         food1Image.src = 'friedpotatoblock.png';
+        console.log("이미지 업데이트: friedpotatoblock.png");
+        food1Image.style.visibility = 'visible';
     } else if (tagUID === '0287AC1B') {
         food1Image.src = 'milkblock.png';
-    }
-    
-    // food1 이미지를 보이게 설정
-    food1Image.style.display = 'block'; // 항상 보이게 설정
-    food1Visible = true; // food1 이미지 보임
-    updateSubmitButtonState(); // 버튼 상태 업데이트
-}
-
-// food2 이미지 업데이트 함수
-function updateFood2Image(tagUID) {
-    console.log("food2 태그 인식:", tagUID); // 태그 인식 로그
-    if (tagUID === '02DBB72B') {
-        food2Image.src = 'riceblock.png';
-    } else if (tagUID === '71FFF728') {
-        food2Image.src = 'appleblock.png';
-    } else if (tagUID === '1298812B') {
-        food2Image.src = 'friedpotatoblock.png';
-    } else if (tagUID === '0287AC2B') {
-        food2Image.src = 'milkblock.png';
-    }
-    // food2 이미지를 보이게 설정
-    food2Image.style.display = 'block'; // 항상 보이게 설정
-    food2Visible = true; // food2 이미지 보임
-    updateSubmitButtonState(); // 버튼 상태 업데이트
-}
-
-// 버튼 활성화 상태 업데이트 함수
-function updateSubmitButtonState() {
-    if (food1Visible && food2Visible) {
-        submitButton.style.pointerEvents = 'auto'; // 버튼 활성화
-        submitButton.style.opacity = '1'; // 버튼 보이게
+        console.log("이미지 업데이트: milkblock.png");
+        food1Image.style.visibility = 'visible';
     } else {
-        submitButton.style.pointerEvents = 'none'; // 버튼 비활성화
-        submitButton.style.opacity = '0.4'; // 버튼 흐리게
+        console.log("알 수 없는 UID: ", tagUID); // 추가 확인
+    }
+    food1Image.style.visibility = 'visible';
+    checkBothImages(); // 이미지가 바뀔 때마다 체크
+}
+
+
+function updateFood2Image(tagUID) {
+    console.log("food1 태그 UID:", tagUID); // 태그 UID 확인
+    console.log("food2 이미지:", food2Image.src);
+    if (tagUID === '02DBB71B') {
+        food2Image.src = 'riceblock.png';
+        console.log("이미지 업데이트: riceblock.png");
+        food2Image.style.visibility = 'visible';
+    } else if (tagUID === '71FFF727') {
+        food2Image.src = 'appleblock.png';
+        console.log("이미지 업데이트: appleblock.png");
+        food2Image.style.visibility = 'visible';
+    } else if (tagUID === '1298811B') {
+        food2Image.src = 'friedpotatoblock.png';
+        console.log("이미지 업데이트: friedpotatoblock.png");
+        food2Image.style.visibility = 'visible';
+    } else if (tagUID === '0287AC1B') {
+        food2Image.src = 'milkblock.png';
+        console.log("이미지 업데이트: milkblock.png");
+        food2Image.style.visibility = 'visible';
+    } else {
+        console.log("알 수 없는 UID: ", tagUID); // 추가 확인
+        food2Image.style.visibility = 'visible';
+    checkBothImages(); // 이미지가 바뀔 때마다 체크
     }
 }
 
-// 버튼 클릭 이벤트 추가
+function checkBothImages() {
+    // food1Image와 food2Image의 src가 빈 문자열이 아니고, 이미지가 설정되어 있을 때만 버튼 활성화
+    if (food1Image.src && food1Image.src !== window.location.href && food2Image.src && food2Image.src !== window.location.href) {
+        submitButton.style.opacity = 1;
+        submitButton.style.pointerEvents = 'auto'; // 버튼 활성화
+    }
+}
 submitButton.addEventListener('click', () => {
+    // 전체 화면 dim 처리
     const overlay = document.getElementById('overlay');
     const loadingGif = document.getElementById('loadingGif');
 
     overlay.style.display = 'flex'; // dim 오버레이 보이기
     loadingGif.style.display = 'block'; // GIF 보이기
+
+        // 3초 후에 resultfoodboard.html로 전환
+        setTimeout(() => {
+        window.location.href = 'resultfoodboard.html';
+    }, 3000);
 });
 </script>
+
 </body>
 </html>
+
+
