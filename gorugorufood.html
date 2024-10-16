@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -200,11 +202,11 @@ let port;
 let reader;
 let currentTag = null; // 현재 태그를 저장할 변수
 let lastTag = null; // 마지막에 읽힌 태그를 저장하는 변수
-let food1Visible = false; // food1 이미지가 보이는지 상태
+
 let food2Visible = false; // food2 이미지가 보이는지 상태
 const connectButton = document.getElementById('serialButton');
-const food1 = document.getElementById("food1");
-const food1Image = food1.querySelector("img");
+
+
 const food2 = document.getElementById("food2");
 const food2Image = food2.querySelector("img");
 const submitButton = document.getElementById("submitButton");
@@ -264,7 +266,10 @@ const submitButton = document.getElementById("submitButton");
     }
 }
 
-
+    food1Image.style.display = 'block'; // 항상 보이게 설정
+    food1Visible = true; // food1 이미지 보임
+    updateSubmitButtonState(); // 버튼 상태 업데이트
+}
 
 // food2 이미지 업데이트 함수
 function updateFood2Image(tagUID) {
@@ -290,7 +295,7 @@ function updateFood2Image(tagUID) {
 }
 // 버튼 활성화 상태 업데이트 함수
 function updateSubmitButtonState() {
-    if (food1Visible && food2Visible) {
+    if (food2Visible) {
         submitButton.style.pointerEvents = 'auto'; // 버튼 활성화
         submitButton.style.opacity = '1'; // 버튼 보이게
     } else {
