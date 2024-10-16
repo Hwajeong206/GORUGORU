@@ -264,28 +264,7 @@ const submitButton = document.getElementById("submitButton");
     }
 }
 
-// food1 이미지 업데이트 함수
-function updateFood1Image(tagUID) {
-    console.log("food1 태그 인식:", tagUID); // 태그 인식 로그
-    if (food2Image.src.includes(tagUID)) {
-        console.log("이미 food2에 사용된 태그입니다.");
-        return; // food2에 동일한 태그가 있으면 업데이트 중단
-    }
 
-    if (tagUID === '02DBB71B') {
-        food1Image.src = 'riceblock.png';
-    } else if (tagUID === '71FFF727') {
-        food1Image.src = 'appleblock.png';
-    } else if (tagUID === '1298811B') {
-        food1Image.src = 'friedpotatoblock.png';
-    } else if (tagUID === '0287AC1B') {
-        food1Image.src = 'milkblock.png';
-    }
-
-    food1Image.style.display = 'block'; // 항상 보이게 설정
-    food1Visible = true; // food1 이미지 보임
-    updateSubmitButtonState(); // 버튼 상태 업데이트
-}
 
 // food2 이미지 업데이트 함수
 function updateFood2Image(tagUID) {
