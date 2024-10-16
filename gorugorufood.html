@@ -198,7 +198,7 @@
 let port;
 let reader;
 let currentTag = null; // 현재 태그를 저장할 변수
-
+let lastTag = null; // 마지막에 읽힌 태그를 저장하는 변수
 let food1Visible = false; // food1 이미지가 보이는지 상태
 let food2Visible = false; // food2 이미지가 보이는지 상태
 const connectButton = document.getElementById('serialButton');
@@ -251,7 +251,7 @@ const submitButton = document.getElementById("submitButton");
 
             if (tagData.startsWith("food1:")) {
                 updateFood1Image(tagUID); // food1 업데이트
-            } else if (tagData.startsWith("food2:")) {
+            } if (tagData.startsWith("food2:")) {
                 updateFood2Image(tagUID); // food2 업데이트
             }
 
